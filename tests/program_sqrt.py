@@ -1,8 +1,4 @@
-import sys
-sys.path.append("..")
-
 from evaluator import *
-from llm import llm
 
 question = """
 Tell me how to compute sqrt() in python without using the sqrt() function, then give me a function to do this. I want the answer as precise as possible. Call the function my_sqrt().
@@ -11,12 +7,9 @@ Tell me how to compute sqrt() in python without using the sqrt() function, then 
 test_case, answer = make_python_test([("round(my_sqrt(12345), 1)", "111.1")])
 
 
-class ProgramSqrt(TestCase):
-    def __init__(self, llm):
-        self.conversation = Conversation(llm)
-        self.evaluate = SubstringEvaluator(answer)
-        self.output_processors = [ExtractCode(llm), PythonRun(test_case)]
-        self.fix_errors = [RetryFixCodeErrors]
-
+TestProgramSqrt = question >> LLMRun() >> ExtractCode() >> ((LLMRun("Below is a student question who was supposed to implement square root from scratch. Did they cheat and just call sqrt directly? Think out loud, then finally answer either 'Yes they cheated' or 'No they did not cheat' <A>", llm=EVAL_LLM) >> ~SubstringEvaluator("they cheated")) & (PythonRun(test_case) >> SubstringEvaluator(answer)))
     
-print(ProgramSqrt(llm).run(question))
+    
+if __name__ == "__main__":
+    print(run_test(TestProgramSqrt))
+

@@ -1,8 +1,4 @@
-import sys
-sys.path.append("..")
-
 from evaluator import *
-from llm import llm
 
 question = """
 Create a JSON metadata for these models:
@@ -29,7 +25,7 @@ pythia-6.9-dedup
 
 With the format:
 
-{"Mistral-7B-v0.1": {"size": 7, dataset: "", "family": "Mistral"}}
+{"Mistral-7B-v0.1": {"size": 7, dataset: "", "family": "Mistral"}, ...}
 
 where family is one of 
 
@@ -50,33 +46,27 @@ gpt2-xl is 1.5b parameters.
 """
 
 
-class MakeJson(TestCase):
-    def __init__(self, llm):
-        self.conversation = Conversation(llm)
-        self.evaluate = JsonSubsetEvaluator({
-  "Mistral-7B-v0.1": {"size": 7, "family": "Mistral"},
-  "RedPajama-INCITE-7B-Base": {"size": 7, "family": "RedPajama"},
-  "RedPajama-INCITE-Base-3B-v1": {"size": 3, "family": "RedPajama"},
-  "falcon40b": {"size": 40, "family": "falcon"},
-  "falcon7b": {"size": 7, "family": "falcon"},
-  "gpt2-xl": {"size": 1.5, "family": "gpt2"},
-  "llama-65b": {"size": 65, "family": "llama"},
-  "llama-7b": {"size": 7, "family": "llama"},
-  "neo-1.3": {"size": 1.3, "family": "neo"},
-  "neo-2.7": {"size": 2.7, "family": "neo"},
-  "neo-6": {"size": 6, "family": "neo"},
-  "open_llama_3b_v2": {"size": 3, "family": "open_llama"},
-  "open_llama_7b_v2": {"size": 7, "family": "open_llama"},
-  "opt-1.3b": {"size": 1.3, "family": "opt"},
-  "opt-6.7b": {"size": 6.7, "family": "opt"},
-  "pythia-1.4": {"size": 1.4, "family": "pythia"},
-  "pythia-1.4-dedup": {"size": 1.4, "family": "pythia"},
-  "pythia-6.9": {"size": 6.9, "family": "pythia"},
-  "pythia-6.9-dedup": {"size": 6.9, "family": "pythia"}
-}
-        )
-        self.output_processors = [ExtractJSON(llm)]
-        self.fix_errors = []
+TestMakeJson = question >> LLMRun() >> ExtractJSON() >> JSONSubsetEvaluator({
+  "Mistral-7B-v0.1": {"size": 7, "dataset": "", "family": "Mistral"},
+  "RedPajama-INCITE-7B-Base": {"size": 7, "dataset": "", "family": "RedPajama"},
+  "RedPajama-INCITE-Base-3B-v1": {"size": 3, "dataset": "", "family": "RedPajama"},
+  "falcon40b": {"size": 40, "dataset": "", "family": "falcon"},
+  "falcon7b": {"size": 7, "dataset": "", "family": "falcon"},
+  "gpt2-xl": {"size": 1.5, "dataset": "", "family": "gpt2"},
+  "llama-65b": {"size": 65, "dataset": "", "family": "llama"},
+  "llama-7b": {"size": 7, "dataset": "", "family": "llama"},
+  "neo-1.3": {"size": 1.3, "dataset": "", "family": "neo"},
+  "neo-2.7": {"size": 2.7, "dataset": "", "family": "neo"},
+  "neo-6": {"size": 6, "dataset": "", "family": "neo"},
+  "open_llama_3b_v2": {"size": 3, "dataset": "", "family": "open_llama"},
+  "open_llama_7b_v2": {"size": 7, "dataset": "", "family": "open_llama"},
+  "opt-1.3b": {"size": 1.3, "dataset": "", "family": "opt"},
+  "opt-6.7b": {"size": 6.7, "dataset": "", "family": "opt"},
+  "pythia-1.4": {"size": 1.4, "dataset": "", "family": "pythia"},
+  "pythia-1.4-dedup": {"size": 1.4, "dataset": "", "family": "pythia"},
+  "pythia-6.9": {"size": 6.9, "dataset": "", "family": "pythia"},
+  "pythia-6.9-dedup": {"size": 6.9, "dataset": "", "family": "pythia"}
+})
 
-    
-print(MakeJson(llm).run(question))
+if __name__ == "__main__":
+    print(run_test(TestMakeJson))

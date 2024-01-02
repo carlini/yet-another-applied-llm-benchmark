@@ -1,0 +1,6 @@
+docker
+
+
+numpy
+Pillow
+llama-cpp-python
