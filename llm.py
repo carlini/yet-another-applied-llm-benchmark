@@ -10,7 +10,7 @@ from llama_cpp import Llama
 
 class OpenAIModel:
     def __init__(self, name):
-        api_key = open(".OPENAI_API_KEY").read()
+        api_key = open(".OPENAI_API_KEY").read().strip()
         self.client = OpenAI(api_key=api_key)
         self.name = name
 
