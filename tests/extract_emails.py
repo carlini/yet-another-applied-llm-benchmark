@@ -33,6 +33,5 @@ TestExtractEmail = question >> LLMRun() >> (SubstringEvaluator("foo-bar@example.
     
 
 if __name__ == "__main__":
-    from llm import llm
     print(run_test(TestExtractEmail))
     

@@ -8,6 +8,17 @@ from evaluator import Env, Conversation
 
 import multiprocessing as mp
 
+def run_one_test(test, test_llm, eval_llm, vision_eval_llm):
+    test.setup(Env(), Conversation(test_llm), test_llm, eval_llm, vision_eval_llm)
+
+    for success, output in test():
+        if success:
+            return True
+        else:
+            pass
+    return False
+                    
+
 def run_all_tests(test_llm):
     test_llm = llm.LLM(model)
     sr = {}
@@ -30,14 +41,8 @@ def run_all_tests(test_llm):
                 #sys.stdout = open(os.devnull, 'w')
 
                 test = getattr(module, t)
-                test.setup(Env(), Conversation(test_llm), test_llm, llm.eval_llm, llm.vision_eval_llm)
 
-                ok = False
-                for success, output in test():
-                    if success:
-                        ok = True
-                    else:
-                        pass
+                ok = run_one_test(test, test_llm, llm.eval_llm, llm.vision_eval_llm)
 
                 sys.stdout = tmp
                 if ok:
@@ -99,7 +104,8 @@ def generate_report(data):
     
 data = {}    
 #for model in ["mistral-tiny", "mistral-small", "mistral-medium", "gpt-3.5-turbo", "gpt-4-1106-preview"]:#, "/Users/Nicholas/Downloads/llama-2-13b-chat.Q4_K_M.gguf"]:
-for model in ["/Users/Nicholas/Downloads/llama-2-13b-chat.Q4_K_M.gguf"]:
+#for model in ["/Users/Nicholas/Downloads/llama-2-13b-chat.Q4_K_M.gguf"]:
+for model in ["gemini-pro", "gpt-3.5-turbo", "mistral-medium", "mistral-small", "gpt-4-1106-preview"]:
     data[model] = run_all_tests(model)
 
 generate_report(data)

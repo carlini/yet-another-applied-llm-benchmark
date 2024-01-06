@@ -7,9 +7,12 @@ Write some Python code to compute the square root of a real number only by calli
 test_case, answer = make_python_test([("round(my_sqrt(16), 1)", "4")])
 
 evaluation = """
-Below is a student's answer to a question on implementing sqrt using only + and - operators. <A>
+Below is a student's answer to a question. I told them to implement `sqrt` using only the + and - operators. <A>
 
-List out each of the following operators one by one, and check if the student uses them: multiply (*), divide (/), inline exponent (**), sqrt(), pow(), exp(), abs(). End your answer with either the string "The student passes" if they used none, or "The student fails" if they used any.
+To check if they are correct, do this:
+1. List out each of the following operators one by one, and check if the student uses them: multiply (*), divide (/), inline exponent (**), sqrt(), pow(), exp(), abs().
+2. Write if they used any of these operators.
+3. End your answer with either the string "The student passes" if they used none of those disallowed operators, or "The student fails" if they used any of the disallowed operators.
 """
 
 TestProgramSqrtWithAdd = question >> LLMRun() >> ExtractCode() >> ((PythonRun(test_case) >> SubstringEvaluator(answer)) & (LLMRun(evaluation) >> SubstringEvaluator("student passes")))

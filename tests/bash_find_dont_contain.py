@@ -11,9 +11,9 @@ def setup_fn():
     open("lower", "w").write("test this asdf")
 
     
-TestBashListSize = Setup(setup_fn) >> question >> LLMRun() >> ExtractCode(keep_main=True) >> BashRun() >> (SubstringEvaluator("hello") & ~SubstringEvaluator("there") & SubstringEvaluator("this") & SubstringEvaluator("asdf") & ~SubstringEvaluator("lower"))
+TestBashFindDontContain = Setup(setup_fn) >> question >> LLMRun() >> ExtractCode(keep_main=True) >> BashRun() >> (SubstringEvaluator("hello") & ~SubstringEvaluator("there") & SubstringEvaluator("this") & SubstringEvaluator("asdf") & ~SubstringEvaluator("lower"))
 
 
 if __name__ == "__main__":
-    print(run_test(TestBashListSize))
+    print(run_test(TestBashFindDontContain))
 

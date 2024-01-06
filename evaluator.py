@@ -7,13 +7,13 @@ import time
 import io
 import docker
 import inspect
-import signal
 
 import numpy as np
 
 from PIL import Image
 
 import docker_controller
+from docker_controller import invoke_docker
 
 
 LLM = "llm"
@@ -153,7 +153,7 @@ class Echo(Node):
     
 class Setup(Node):
     def __call__(self, x):
-        setup_docker(self.env)
+        docker_controller.setup_docker(self.env)
         code = inspect.getsource(self.runner)
         to_invoke = self.runner.__name__
 
@@ -266,32 +266,6 @@ class ExtractCode(Node):
         for maybe in self.try_extract(output):
             yield maybe
 
-def setup_docker(env):
-    env.docker = docker.from_env()
-    env.container = env.docker.containers.run("ubuntu-python-app", detach=True, tty=True)
-
-
-def invoke_docker(env, files, run_cmd, out_bytes=False):
-    if env.docker is None:
-        setup_docker(env)
-
-    def raise_timeout(signum, frame):
-        raise TimeoutError
-    signal.signal(signal.SIGALRM, raise_timeout)
-    signal.alarm(5)  # set the alarm for 5 seconds
-    
-    try:
-        # Function call that might take too long
-        out = docker_controller.safe_run(env.docker, env.container, files, run_cmd)
-    except TimeoutError:
-        out = b"Timeout: function took too long to complete"
-
-    signal.alarm(0) 
-
-    if out_bytes:
-        return out
-    else:
-        return out.decode("utf-8")
 
 
 #class LatexCompiler(Node):
@@ -508,14 +482,18 @@ class Conversation:
 
 def run_test(test):
     from llm import llm, eval_llm, vision_eval_llm
-    test.setup(Env(), Conversation(llm), llm, eval_llm, vision_eval_llm)
+    env = Env()
+    test.setup(env, Conversation(llm), llm, eval_llm, vision_eval_llm)
 
     for success, output in test():
         if success:
             return True
         else:
             pass
-        
+
+    if env.container:
+        docker_controller.async_kill_container(env.docker, env.container)
+
     return False
     
 
