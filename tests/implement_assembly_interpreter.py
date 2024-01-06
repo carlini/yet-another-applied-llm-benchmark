@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python']
+
 question = """Here is the description of a new assembly language:
 
 * 8 registers (R1, R2, R3, R4, R5, R6, R7, R8) that can hold integers.

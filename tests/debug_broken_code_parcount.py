@@ -1,4 +1,6 @@
 from evaluator import *
+
+TAGS = ['explain', 'python', 'fix']
 import collections
 
 question = """

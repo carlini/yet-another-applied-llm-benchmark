@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python']
+
 question = """
 Write a function called `match` in Python that uses a regex to find any word repeated 5 times or more. Return that word. If no word is repeated 5 times or more, return an empty string.
 """

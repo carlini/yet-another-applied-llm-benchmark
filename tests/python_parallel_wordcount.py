@@ -1,4 +1,6 @@
 from evaluator import *
+
+TAGS = ['code', 'python', 'data', 'performance']
 import collections
 
 question = """

@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python']
+
 question = 'Write a python program that prints the string "hello world" and tell me how it works in a sentence'
 
 answer = "hello world"

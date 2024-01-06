@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['data']
+
 question = """
 Create a JSON metadata for these models:
 

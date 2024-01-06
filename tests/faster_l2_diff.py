@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'performance', 'python']
+
 question = """
 I have this program
 

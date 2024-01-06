@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['data']
+
 question = """
 Extract all the email addresses that are invalid from this text file:
 

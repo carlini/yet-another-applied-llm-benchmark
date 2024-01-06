@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['explain', 'python']
+
 question = """
 In python what __thing__ do I use for ~, kind of like how __add__ is for +?
 """

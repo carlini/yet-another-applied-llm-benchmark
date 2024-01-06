@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python']
+
 question = """
 Shorten this python code. Keep the name the same.
 ```

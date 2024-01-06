@@ -1,4 +1,6 @@
 from evaluator import *
+
+TAGS = ['explain', 'fun']
 import base64 
 
 question = """

@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python', 'visual']
+
 question = """
 Write a python program that, manually, draws a red triangle on a white background and saves it as a 200x200 gif file. Do not use any graphics libraries. Write the gif byte by byte. Output the gif file to stdout.
 

@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['explain']
+
 question = """
 What do I do to fix AutoModel.from_pretrained to make it auto model with lm head
 """

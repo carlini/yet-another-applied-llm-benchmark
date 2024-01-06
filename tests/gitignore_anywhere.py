@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['explain']
+
 question = """
 gitignore any file called .KEYFILE anywhere
 """

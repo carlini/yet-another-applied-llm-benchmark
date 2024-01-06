@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python']
+
 primes = """
 
 SET R1 2          // Starting number to check for prime

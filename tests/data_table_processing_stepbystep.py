@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['data']
+
 question = '''
 Here is a table about information of states and territory.
 

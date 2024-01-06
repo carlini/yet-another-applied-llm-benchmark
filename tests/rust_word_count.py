@@ -1,4 +1,6 @@
 from evaluator import *
+
+TAGS = ['code', 'rust', 'data']
 import collections
 
 

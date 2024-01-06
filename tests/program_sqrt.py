@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python']
+
 question = """
 Tell me how to compute sqrt() in python without using the sqrt() function, then give me a function to do this. I want the answer as precise as possible. Call the function my_sqrt().
 """

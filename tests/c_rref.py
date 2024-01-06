@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'c', 'performance']
+
 question = """
 Rewrite this function in C. You can assume that the input is a 2d matrix correctly formatted. Call it rref(int** matrix, int rows, int cols, int graphlen) where the size is matrix[rows][cols]. Return an int** of used_for_row.
 

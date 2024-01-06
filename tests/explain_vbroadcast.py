@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['explain']
+
 question = """
 What does the VPBROADCASTB instruction do?
 """

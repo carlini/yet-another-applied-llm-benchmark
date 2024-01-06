@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'c']
+
 question = """
 Here's a python program. Please rewrite it in c with the type signature float solve_dp(float* arr, int size, int lines_left)
 

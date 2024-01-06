@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python']
+
 question = """
 Given this BNF-style grammar write a Python function `evaluate(str)` that evaluates the expression
 

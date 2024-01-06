@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'explain']
+
 question = """
 What does this code do
 

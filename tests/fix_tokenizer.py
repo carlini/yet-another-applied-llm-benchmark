@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'fix', 'python']
+
 question = """
 Fix this tokenizer keeping it as similar as possible
 

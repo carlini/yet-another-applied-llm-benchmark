@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['explain']
+
 question = """
 In emacs lisp how do I silence "Process python-process finished"
 """

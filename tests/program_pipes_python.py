@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python']
+
 question = """
 Write a python class Const, Square, Print so that I can write, for example,
 

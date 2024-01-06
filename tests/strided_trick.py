@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python', 'performance']
+
 question = """
 Write a function strides() that given an array of tokens T as numpy array, using strided trick, returns [T[0:50], T[10:60], T[20: 70] ... ]
 """

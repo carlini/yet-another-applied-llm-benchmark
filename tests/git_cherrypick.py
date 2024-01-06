@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['bash']
+
 
 question = """
 You are in a git repository. I have two branches, main and some other one I forgot the name of. Take just the first commit that differs between main and the other branch, and commit it onto main.

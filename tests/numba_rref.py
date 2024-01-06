@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python', 'performance']
+
 question = """
 Rewrite this function to use numba and nopython mode. You can assume that the input is a 2d matrix correctly formatted. Call it rref still.
 

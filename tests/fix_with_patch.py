@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'fix', 'python']
+
 code = """import re
 
 class Tokenizer:

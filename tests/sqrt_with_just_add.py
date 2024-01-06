@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python', 'fun']
+
 question = """
 Write some Python code to compute the square root of a real number only by calling add or subtract or comparisons with constants. Call the function my_sqrt().
 """

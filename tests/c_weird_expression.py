@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['explain', 'c']
+
 question = """
 What does the c expression `-~++*x--` evaluate to in simplest form? Ignore side effects. Think out loud then give a final summary.
 """

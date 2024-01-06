@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'c']
+
 question = """
 Write a C++ class Const, Square, Print so that I can write, for example,
 

@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python']
+
 question_easy = """
 I have a list of several thousand file paths in /tmp/files. Write a python script that merges these all together and splits the content into 16 files called /tmp/merged_%d for i in 0..15 where each is approximately the same size. To do this, sort files by size (largest first) and add files in order always to the smallest one. "/tmp/files" is a list of file paths, one per line.
 """

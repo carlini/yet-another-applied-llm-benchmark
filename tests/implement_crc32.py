@@ -1,4 +1,6 @@
 from evaluator import *
+
+TAGS = ['code', 'c']
 import zlib
 
 question = 'Write a c program that calculates the crc32 hash of the string "correct horse battery staple" and prints it to stdout. Dont call any builtin crc32 functions.'

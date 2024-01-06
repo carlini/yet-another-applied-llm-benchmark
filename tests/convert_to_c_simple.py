@@ -1,4 +1,6 @@
 from evaluator import *
+
+TAGS = ['code', 'c']
 from llm import llm
 
 question = """

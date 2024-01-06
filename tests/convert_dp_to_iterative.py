@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'performance', 'python']
+
 my_code = """
 @lru_cache(maxsize=None)
 def solve_dp(graph, lines_left, distance_since_last):

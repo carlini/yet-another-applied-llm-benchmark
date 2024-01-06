@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'fix']
+
 question = """
 Fix this program. Make sure to keep the format "var: value".
 

@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['explain']
+
 question = """
 What port has 5 pins on the top and 4 on the bottom?
 """

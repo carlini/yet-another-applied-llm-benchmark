@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'bash']
+
 question = """
 Write a bash script to rename all files of the form "merged_*" to "finished_*". I want to call it by running bash rename.sh /path/to/files.
 """

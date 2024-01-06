@@ -23,7 +23,9 @@ class LLM:
         else:
             raise
         try:
-            self.cache = pickle.load(open(f"/tmp/cache-{name.split('/')[-1]}.p","rb"))
+            if not os.path.exists("tmp"):
+                os.mkdir("tmp")
+            self.cache = pickle.load(open(f"tmp/cache-{name.split('/')[-1]}.p","rb"))
         except:
             self.cache = {}
 
@@ -45,7 +47,7 @@ class LLM:
         response = self.model.make_request(conversation, add_image=add_image, logit_bias=logit_bias, max_tokens=max_tokens)
 
         self.cache[cache_key] = response
-        pickle.dump(self.cache, open(f"/tmp/cache-{self.name.split('/')[-1]}.p","wb"))
+        pickle.dump(self.cache, open(f"tmp/cache-{self.name.split('/')[-1]}.p","wb"))
         return response
 
 #llm = LLM("gemini-pro")

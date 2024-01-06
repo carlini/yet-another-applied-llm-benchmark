@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'c', 'visual']
+
 question = """
 Write me a C program that emits a .bmp that's a depiction of an american flag to stdout.
 """

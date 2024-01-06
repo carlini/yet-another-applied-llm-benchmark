@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['fun']
+
 question = """
 For each of the following ten movies give at most 5 emoji that would best describe the movie.
 

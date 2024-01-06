@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['bash']
+
 question = "In bash list all files in cwd that don't contain asdf in the contents (case-ignore)"
 
 

@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python', 'performance']
+
 question = """
 Write me a numba implementation of levensthin distance, taking two numpy int arrays. Call it levenshtein. Run it in nopython mode. Character swaps are cost 2.
 """

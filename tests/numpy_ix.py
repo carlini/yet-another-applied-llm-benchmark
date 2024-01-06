@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['explain', 'python']
+
 question = '''I want a function to vectorize
 
         frame = np.zeros((out_h, out_w, 3), dtype=np.uint8)

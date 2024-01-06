@@ -1,5 +1,7 @@
 from evaluator import *
 
+TAGS = ['code', 'python']
+
 question = """
 Write a python function `dedent(str)` that takes as input a string of python code and de-dents it maximally. Lines that are entirely blank don't count.
 """
