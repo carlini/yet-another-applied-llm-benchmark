@@ -227,10 +227,11 @@ class ExtractJSON(Node):
                 yield maybe
 
 class ExtractCode(Node):
-    def __init__(self, keep_main=False, postfix="", manual=None):
+    def __init__(self, keep_main=False, postfix="", manual=None, lang=None):
         self.keep_main = keep_main
         self.postfix = postfix
         self.manual = manual
+        self.lang = lang
 
     def try_extract(self, output):
         output = output.replace("```python", "```")
@@ -251,14 +252,19 @@ class ExtractCode(Node):
         if orig_output.count("```") == 2:
             for maybe in self.try_extract(orig_output):
                 yield maybe
-            
+            return
+
+        language = ""
+        if self.lang is not None:
+            language = f"(in {self.lang})"
+                
         if self.manual is not None:
             output = self.llm(self.manual.replace("<A>", orig_output))
         elif self.keep_main:
             assert self.postfix == ""
-            output = self.llm("Take the below answer to my programming question and return just the complete code in a single file so I can copy and paste it into an editor and directly run it. Include any header and main necessary so I can run it by copying this one file. DO NOT MODIFY THE CODE OR WRITE NEW CODE. Here is the code: \n" + orig_output)
+            output = self.llm("Take the below answer to my programming question {language} and return just the complete code in a single file so I can copy and paste it into an editor and directly run it. Include any header and main necessary so I can run it by copying this one file. DO NOT MODIFY THE CODE OR WRITE NEW CODE. Here is the code: \n" + orig_output)
         else:
-            output = self.llm("Take the below answer to my programming question and return just the complete code in a single file so I can copy and paste it into an editor and directly run it. Remove any test cases or example code after the function definition. Remove any main function. I will write those myself. Do include header imports. DO NOT MODIFY THE CODE OR WRITE NEW CODE. Here is the code: \n" + orig_output + ("\nI will be running this code with the following helper functions:\n" + self.postfix if self.postfix else ""))
+            output = self.llm("Take the below answer to my programming question {language} and return just the complete code in a single file so I can copy and paste it into an editor and directly run it. Remove any test cases or example code after the function definition. Remove any main function. I will write those myself. Do include header imports. DO NOT MODIFY THE CODE OR WRITE NEW CODE. Here is the code: \n" + orig_output + ("\nI will be running this code with the following helper functions:\n" + self.postfix if self.postfix else ""))
 
         print("DO EXTRACT")
         print("HAVE", output)
