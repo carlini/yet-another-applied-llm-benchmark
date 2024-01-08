@@ -1,0 +1,8 @@
+{
+    "api_keys": {
+      "openai": "TODO",
+      "mistral": "TODO",
+      "claude": "TODO",
+      "gemini": "TODO"
+    }
+}

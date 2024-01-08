@@ -3,7 +3,7 @@ import anthropic
 class ClaudeModel:
     def __init__(self, name):
         self.name = name
-        self.api_key = open(".CLAUDE_API_KEY").read()
+        self.api_key = json.load(open("config.json"))['api_keys']['claude'].strip()
 
     def make_request(self, conversation, add_image=None, logit_bias=None, max_tokens=None):
         conversation = [{"role": "user" if i%2 == 0 else "assistant", "content": content} for i,content in enumerate(conversation)]

@@ -7,6 +7,10 @@ import io
 import threading
 import signal
 
+
+# DO NOT SET THIS FLAG TO TRUE UNLESS YOU ARE SURE YOU UNDERSTAND THE CONSEQUENCES
+# IT IS VERY DANGEROUS. YOU WILL BE DIRECTLY EVALUATING WHATEVER COMES OUT OF
+# A LANGUAGE MODEL DIRECTLY ON YOUR COMPUTER WITH NO SAFETY CHECKS.
 I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE = False
 
 if not I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE:
@@ -15,7 +19,7 @@ if not I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE:
 
 def setup_docker(env):
     env.docker = docker.from_env()
-    env.container = env.docker.containers.run("ubuntu-python-app", detach=True, tty=True)
+    env.container = env.docker.containers.run("llm-benchmark-image", detach=True, tty=True)
 
 
 def make_tar(files):
@@ -83,16 +87,16 @@ def invoke_docker(env, files, run_cmd, out_bytes=False):
 
 if I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE:
     def setup_docker():
-        pass
+        global fake_docker_id
+        fake_docker_id = random.randint(0, 1000000)
+        os.mkdir("/tmp/fakedocker_%d"%n)
     
     def invoke_docker(env, files, run_cmd, out_bytes=False):
         # TODO: test this
-        n = random.randint(0, 1000000)
-        os.mkdir("/tmp/fakedocker_%d"%n)
         for file_name, file_content in files.items():
-            with open("/tmp/fakedocker_%d/%s"%(n, file_name), "wb") as f:
+            with open("/tmp/fakedocker_%d/%s"%(fake_docker_id, file_name), "wb") as f:
                 f.write(file_content)
-        proc = subprocess.run(run_cmd, cwd="/tmp/fakedocker_%d"%n, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.run(run_cmd, cwd="/tmp/fakedocker_%d"%fake_docker_id, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         if out_bytes:
             return proc.stdout + proc.stderr

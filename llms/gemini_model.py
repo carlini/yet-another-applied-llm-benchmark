@@ -4,7 +4,7 @@ import requests
 class GeminiModel:
     def __init__(self, name):
         self.name = name
-        self.api_key = open(".GEMINI_API_KEY").read().strip()  # Ensure to securely store and access your API key
+        self.api_key = json.load(open("config.json"))['api_keys']['gemini'].strip()
         self.headers = {
             'Authorization': f'Bearer {self.api_key}',  # Adjust if the API expects a different kind of authentication
             'Content-Type': 'application/json'

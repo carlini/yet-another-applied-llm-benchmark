@@ -1,6 +1,6 @@
 from evaluator import *
 
-TAGS = ['bash']
+TAGS = ['bash', "git", "agent"]
 
 
 question = """

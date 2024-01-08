@@ -1,6 +1,6 @@
 from evaluator import *
 
-TAGS = ['bash']
+TAGS = ['bash', "git", "agent"]
 
 question = """
 You are in a repository with two files `a` and `b`. Make a new git repo and then commit them both.

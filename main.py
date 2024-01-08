@@ -52,6 +52,7 @@ def run_all_tests(test_llm):
                 sr[f] = ok
     return sr
 
+
 def generate_report(data, tags):
     # Recalculating all keys to ensure they are in the same order
     all_keys = sorted({key for inner_dict in data.values() for key in inner_dict.keys()})
@@ -85,7 +86,7 @@ def generate_report(data, tags):
     tag_values = set(sum([tags[key] for key in tags], []))
     
     for tag in tag_values:
-        html_content += "<span><input type='checkbox' onclick='hiderows()' id='" + tag + "' name='" + tag + "' value='" + tag + "' checked><label for='" + tag + "'>" + tag + "</label> | </span>"
+        html_content += "<span><input type='checkbox' onclick='hiderows()' id='" + tag + "' name='" + tag + "' value='" + tag + "' checked='checked'><label for='" + tag + "'>" + tag + "</label> | </span>"
 
     html_content += """<script>
 function hiderows() {
@@ -96,9 +97,9 @@ function hiderows() {
     // show a row if any of the tags applies
     Array.prototype.slice.call(rows).forEach((row,id) => {
     if (id == 0) return;
-        var tags = row.getAttribute('tags').split(',');
     // allow th special
-        if (tags.some(tag => checked.includes(tag))) {
+    console.log(checked)
+        if (checked.some(tag=>row.getAttribute('tag_'+tag))) {
             row.style.display = 'table-row';
         } else {
             row.style.display = 'none';
@@ -111,12 +112,12 @@ function hiderows() {
 
     html_content += "<table>"
     # Adding the transposed sorted header row (originally columns, now rows)
-    html_content += "<tr><th></th>" + "".join([f"<th>{key}</th>" for key in sorted_transposed_rows]) + "</tr>"
+    html_content += "<tr><th>Model</th><th>Tags</th>" + "".join([f"<th>{key}</th>" for key in sorted_transposed_rows]) + "</tr>"
     
     # Adding transposed sorted rows (originally keys from inner dictionaries, now columns)
     for column_key in sorted_transposed_columns:
         this_tags = tags[column_key]
-        html_content += f"<tr tags='{','.join(this_tags)}'><th>{column_key}</th>"
+        html_content += f"<tr {' '.join('tag_%s=\'1\''%x for x in this_tags)}><th>{column_key}</th><td>{', '.join(this_tags)}</td>"
         for row_key in sorted_transposed_rows:
             value = transposed_data[column_key].get(row_key)
             # Color coding the cell or leaving it blank if the value is None

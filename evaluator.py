@@ -16,7 +16,7 @@ import docker_controller
 from docker_controller import invoke_docker
 
 
-LLM = "llm"
+LLM = "eval_llm"
 EVAL_LLM = "eval_llm"
 VISION_EVAL_LLM = "vision_eval_llm"
 
@@ -239,6 +239,7 @@ class ExtractCode(Node):
         output = output.replace("```c", "```")
         output = output.replace("```cpp", "```")
         output = output.replace("```rust", "```")
+        output = output.replace("```sql", "```")
         output = output.replace("```sh", "```")
         output = output.replace("```diff", "```")
         if "```" in output:
@@ -298,6 +299,13 @@ class PythonRun(Node):
 
         yield invoke_docker(self.env, {"main.py": code.encode()}, ["python3.11", "main.py"], out_bytes=self.out_bytes)
 
+class SQLRun(Node):
+    def __init__(self):
+        pass
+
+    def __call__(self, code):
+        yield invoke_docker(self.env, {"run.sql": code.encode()}, ["sqlite3", "-init", "run.sql", "database.db", ".exit"])
+        
 class BashRun(Node):
     def __init__(self, test_case="", args=[]):
         self.test_case = test_case
@@ -504,12 +512,10 @@ def run_test(test):
     
 
 def make_python_test(q_and_a, header=""):
-    qs = []
+    qs = [header]
     
     for q, a in q_and_a:
         qs.append(f"""
-{header}
-
 answer = {q}
 expected = {a}
 assert answer == expected, f'Wrong answer; got {{answer}} instead of {{expected}}'""")
@@ -521,11 +527,10 @@ assert answer == expected, f'Wrong answer; got {{answer}} instead of {{expected}
 def make_c_test(q_and_a, header=""):
     qs = []
 
-    qs.append("#include<stdio.h>\n#include<stdlib.h>\nint main() {");
+    qs.append("#include<stdio.h>\n#include<stdlib.h>\nint main() {")
+    qs.append(header)
     for q, a in q_and_a:
         qs.append(f"""
-{header}
-
 int answer = {q};
 int expected = {a};
 if (answer != expected) {{
