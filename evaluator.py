@@ -13,7 +13,7 @@ import numpy as np
 from PIL import Image
 
 import docker_controller
-from docker_controller import invoke_docker
+from docker_controller import invoke_docker, DockerJob
 
 
 LLM = "eval_llm"
@@ -27,6 +27,7 @@ def RetryFixCodeErrors(self, conversation, error_message):
 class Env:
     docker = None
     container = None
+    docker_job = None
 
 class Node:
     def __init__(self, runner):
@@ -159,7 +160,7 @@ class Setup(Node):
 
         code = code + f"\n\n{to_invoke}()"
         out = invoke_docker(self.env, {"setup.py": code.encode()}, ["python3.11", "setup.py"])
-        print('have here', out)
+        print('on setup got', out)
 
         return [out]
 
@@ -263,9 +264,9 @@ class ExtractCode(Node):
             output = self.llm(self.manual.replace("<A>", orig_output))
         elif self.keep_main:
             assert self.postfix == ""
-            output = self.llm("Take the below answer to my programming question {language} and return just the complete code in a single file so I can copy and paste it into an editor and directly run it. Include any header and main necessary so I can run it by copying this one file. DO NOT MODIFY THE CODE OR WRITE NEW CODE. Here is the code: \n" + orig_output)
+            output = self.llm(f"Take the below answer to my programming question {language} and return just the complete code in a single file so I can copy and paste it into an editor and directly run it. Include any header and main necessary so I can run it by copying this one file. DO NOT MODIFY THE CODE OR WRITE NEW CODE. Here is the code: \n" + orig_output)
         else:
-            output = self.llm("Take the below answer to my programming question {language} and return just the complete code in a single file so I can copy and paste it into an editor and directly run it. Remove any test cases or example code after the function definition. Remove any main function. I will write those myself. Do include header imports. DO NOT MODIFY THE CODE OR WRITE NEW CODE. Here is the code: \n" + orig_output + ("\nI will be running this code with the following helper functions:\n" + self.postfix if self.postfix else ""))
+            output = self.llm(f"Take the below answer to my programming question {language} and return just the complete code in a single file so I can copy and paste it into an editor and directly run it. Remove any test cases or example code after the function definition. Remove any main function. I will write those myself. Do include header imports. DO NOT MODIFY THE CODE OR WRITE NEW CODE. Here is the code: \n" + orig_output + ("\nI will be running this code with the following helper functions:\n" + self.postfix if self.postfix else ""))
 
         print("DO EXTRACT")
         print("HAVE", output)
@@ -351,7 +352,30 @@ class CRun(Node):
         yield invoke_docker(self.env, {"main.c": code.encode(),
                                        "main.sh": "gcc -o a.out main.c -lm\n./a.out".encode()},
                             ["bash", "main.sh"], out_bytes=self.out_bytes)
-        
+
+
+class StartDockerJob(Node):
+    def __init__(self, command, eos_string):
+        self.command = command
+        self.eos_string = eos_string
+
+    def __call__(self, text):
+        self.env.docker_job = DockerJob(self.env.container.id, self.eos_string)
+        print("ID", self.env.container.id)
+        print("GO!", self.command)
+        out = self.env.docker_job(self.command)
+        print("DONE")
+
+        yield out
+
+class SendStdoutReceiveStdin(Node):
+    def __init__(self):
+        pass
+
+    def __call__(self, text):
+        yield self.env.docker_job(text)
+
+
 class CppRun(Node):
     def __init__(self, test_case="", out_bytes=False):
         self.test_case = test_case
@@ -474,7 +498,10 @@ class LLMVisionRun(Node):
         print("RUN VISION")
         llm = getattr(self, self.which_llm)
         try:
-            img = Image.open(io.BytesIO(output))
+            if isinstance(output, bytes):
+                img = Image.open(io.BytesIO(output))
+            else:
+                img = output
             out = llm(self.check_prompt, add_image=img, max_tokens=512)
         except Exception as e:
             out = str(e)

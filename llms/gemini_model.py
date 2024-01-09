@@ -9,7 +9,7 @@ class GeminiModel:
             'Authorization': f'Bearer {self.api_key}',  # Adjust if the API expects a different kind of authentication
             'Content-Type': 'application/json'
         }
-        self.endpoint = "https://us-central1-aiplatform.googleapis.com/v1/projects/practical-poisoning/locations/us-central1/publishers/google/models/gemini-pro:streamGenerateContent?alt=sse"
+        self.endpoint = f"https://us-central1-aiplatform.googleapis.com/v1/projects/practical-poisoning/locations/us-central1/publishers/google/models/{name}:streamGenerateContent?alt=sse"
 
     def make_request(self, conversation, add_image=None, logit_bias=None, skip_cache=False, temperature=0.3, top_p=1, max_tokens=1024, stream=False, safe_mode=False, random_seed=None):
         # Prepare the conversation messages in the required format
@@ -43,5 +43,6 @@ class GeminiModel:
 
 if __name__ == "__main__":
     import sys
-    q = sys.stdin.read().strip()
-    print(q+":", GeminiModel("gemini-pro").make_request([q]))
+    #q = sys.stdin.read().strip()
+    q = "hello there"
+    print(GeminiModel("chat-bison").make_request([q]))

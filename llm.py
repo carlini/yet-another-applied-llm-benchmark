@@ -8,7 +8,7 @@ import pickle
 from llms.openai_model import OpenAIModel
 from llms.claude_model import ClaudeModel
 from llms.mistral_model import MistralModel
-from llms.gemini_model import GeminiModel
+from llms.vertexai_model import VertexAIModel
 
 class LLM:
     def __init__(self, name="gpt-3.5-turbo"):
@@ -19,8 +19,8 @@ class LLM:
             self.model = LLAMAModel(name)
         elif 'mistral' in name:
             self.model = MistralModel(name)
-        elif 'gemini' in name:
-            self.model = GeminiModel(name)
+        elif 'gemini' in name or 'bison' in name:
+            self.model = VertexAIModel(name)
         else:
             raise
         try:
@@ -52,6 +52,7 @@ class LLM:
         return response
 
 #llm = LLM("gemini-pro")
-llm = LLM("gpt-3.5-turbo")
+#llm = LLM("gpt-3.5-turbo")
+llm = LLM("gpt-4-1106-preview")
 eval_llm = LLM("gpt-4-1106-preview")
 vision_eval_llm = LLM("gpt-4-vision-preview")

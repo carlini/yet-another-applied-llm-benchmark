@@ -117,7 +117,7 @@ function hiderows() {
     # Adding transposed sorted rows (originally keys from inner dictionaries, now columns)
     for column_key in sorted_transposed_columns:
         this_tags = tags[column_key]
-        html_content += f"<tr {' '.join('tag_%s=\'1\''%x for x in this_tags)}><th>{column_key}</th><td>{', '.join(this_tags)}</td>"
+        html_content += f"""<tr {' '.join('tag_%s="1"'%x for x in this_tags)}><th>{column_key}</th><td>{', '.join(this_tags)}</td>"""
         for row_key in sorted_transposed_rows:
             value = transposed_data[column_key].get(row_key)
             # Color coding the cell or leaving it blank if the value is None
@@ -152,10 +152,10 @@ def get_tags():
 data = {}    
 #for model in ["mistral-tiny", "mistral-small", "mistral-medium", "gpt-3.5-turbo", "gpt-4-1106-preview"]:#, "/Users/Nicholas/Downloads/llama-2-13b-chat.Q4_K_M.gguf"]:
 #for model in ["/Users/Nicholas/Downloads/llama-2-13b-chat.Q4_K_M.gguf"]:
-#for model in ["gpt-3.5-turbo"]:#["gemini-pro", "gpt-3.5-turbo", "mistral-medium", "mistral-small", "gpt-4-1106-preview"]:
-#    data[model] = run_all_tests(model)
+for model in ["gpt-3.5-turbo", "gemini-pro", "chat-bison", "mistral-medium", "mistral-small", "mistral-tiny", "gpt-4-1106-preview"]:
+    data[model] = run_all_tests(model)
 
-data = {'gpt-3.5-turbo': {'decompile_py_simple.py': True, 'draw_easier_flag_bmp.py': False, 'implement_assembly_interpreter.py': False, 'implement_assembly_interpreter_by_example.py': False, 'explain_code_prime2.py': False, 'python_traceback.py': False, 'what_is_automodel.py': False, 'data_table_processing.py': False, 'py_image_resize.py': True, 'bash_list_files_by_size_mod_ten.py': False, 'program_in_new_assembly.py': False, 'explain_code_prime.py': True, 'gol_rle_decode.py': False, 'explain_vbroadcast.py': True, 'faster_l2_diff.py': False, 'python_parallel_wordcount.py': False, 'easy_parser_generator.py': True, 'baking_help.py': False, 'fix_with_patch.py': False, 'emoji_movies.py': False, 'do_uudecode.py': False, 'jump_point_search.py': False, 'rust_word_count.py': False, 'numba_rref.py': False, 'implement_crc32.py': True, 'program_sqrt.py': True, 'numpy_ix.py': False, 'base64_qanda.py': False, 'sqrt_with_just_add.py': False, 'convert_to_c.py': True, 'strided_trick.py': False, 'emacs_lisp_silence_cmd.py': False, 'draw_flag_bmp.py': False, 'identify_uuencode.py': False, 'gitignore_anywhere.py': True, 'program_pipies_cpp.py': False, 'debug_broken_code_parcount.py': False, 'convert_to_c_simple.py': True, 'python_jpeg.py': False, 'make_json.py': True, 'db9_pinout.py': False, 'rust_parallel_wordcount.py': True, 'extract_emails.py': False, 'basic_git_setup.py': True, 'c_weird_expression.py': False, 'data_table_processing_stepbystep.py': False, 'aws_ipv6.py': False, 'decompile_py_mid.py': True, 'whisper_merge.py': False, 'fix_tokenizer.py': False, 'convert_dp_to_iterative.py': False, 'c_rref.py': False, 'regex_remove_5_words.py': True, 'what_is_inv.py': True, 'python_to_c_loop_update.py': False, 'decompile_py_rref.py': False, 'print_hello.py': True, 'dedent_code_fn.py': True, 'git_cherrypick.py': False, 'bash_renamer.py': True, 'program_pipes_python.py': False, 'bash_find_dont_contain.py': True, 'numba_levenshtein.py': False, 'shorten_python_if_missing.py': True, 'jax_onehot.py': False, 'merge_into_16.py': False, 'webgl_triangle.py': False}}
+print(data)
 
 tags = get_tags()
 

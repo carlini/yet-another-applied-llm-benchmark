@@ -6,6 +6,14 @@ import tarfile
 import io
 import threading
 import signal
+import subprocess
+import pty
+import os
+import select
+import re
+import termios
+import struct
+import fcntl
 
 
 # DO NOT SET THIS FLAG TO TRUE UNLESS YOU ARE SURE YOU UNDERSTAND THE CONSEQUENCES
@@ -60,6 +68,91 @@ def safe_run(client, container, files, run_cmd):
     exit_code, output = container.exec_run(run_cmd)
     
     return output
+
+
+class DockerJob:
+    def __init__(self, container_id, eos_string):
+        self.eos_string = eos_string
+        # Create a pseudo-terminal
+        master, slave = pty.openpty()
+
+        
+        # Set the window size
+        winsize = struct.pack("HHHH", 100, 160, 0, 0)
+        fcntl.ioctl(slave, termios.TIOCSWINSZ, winsize)
+
+
+        # Start the Docker subprocess with the pseudo-terminal
+        self.process = subprocess.Popen(f"docker exec -it {container_id} /bin/bash",
+                                        shell=True,
+                                        stdin=slave,
+                                        stdout=slave,
+                                        stderr=subprocess.PIPE,
+                                        text=True)
+
+        # Close the slave FD as it is no longer needed
+        os.close(slave)
+        self.master_fd = master
+        
+    @staticmethod
+    def remove_ansi(text):
+        ansi_escape =re.compile(r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]')
+        return ansi_escape.sub('', text)
+
+    def __call__(self, cmd):
+        # Send the command through the PTY
+        os.write(self.master_fd, (cmd + "\n").encode())
+
+        # Read the output until the EOS string is encountered
+        output = []
+        while True:
+            ready, _, _ = select.select([self.master_fd], [], [], 2)  # 2-second timeout
+            if ready:
+                line = os.read(self.master_fd, 1024).decode()
+                output.append(line)
+                if self.eos_string in line:
+                    break
+            else:
+                # Timeout occurred
+                print("Timeout - no output received in 2 seconds")
+                break
+
+
+        output = ''.join(output)
+        output = self.remove_ansi(output)
+        print("Output:", repr(output))
+        return output
+
+
+class DockerJobOld:
+    def __init__(self, container_id, command, eos_string):
+        self.eos_string = eos_string
+        # Initialize the Docker subprocess
+        self.process = subprocess.Popen(f"docker exec -it {container_id} /bin/bash",
+                                        shell=True,
+                                        stdin=subprocess.PIPE,
+                                        stdout=subprocess.PIPE,
+                                        stderr=subprocess.PIPE,
+                                        text=True)
+        self(command)
+
+    def __call__(self, cmd):
+        # Send the command
+        print("Running", cmd)
+        self.process.stdin.write(cmd + "\n")
+        self.process.stdin.flush()
+
+        # Read the output until the EOS string is encountered
+        output = []
+        while True:
+            print("Waiting readline")
+            line = self.process.stdout.readline()
+            print("Got", repr(line))
+            output.append(line)
+            if self.eos_string in line:
+                break
+
+        return ''.join(output)
 
 
 def invoke_docker(env, files, run_cmd, out_bytes=False):
