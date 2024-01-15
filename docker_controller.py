@@ -124,37 +124,6 @@ class DockerJob:
         return output
 
 
-class DockerJobOld:
-    def __init__(self, container_id, command, eos_string):
-        self.eos_string = eos_string
-        # Initialize the Docker subprocess
-        self.process = subprocess.Popen(f"docker exec -it {container_id} /bin/bash",
-                                        shell=True,
-                                        stdin=subprocess.PIPE,
-                                        stdout=subprocess.PIPE,
-                                        stderr=subprocess.PIPE,
-                                        text=True)
-        self(command)
-
-    def __call__(self, cmd):
-        # Send the command
-        print("Running", cmd)
-        self.process.stdin.write(cmd + "\n")
-        self.process.stdin.flush()
-
-        # Read the output until the EOS string is encountered
-        output = []
-        while True:
-            print("Waiting readline")
-            line = self.process.stdout.readline()
-            print("Got", repr(line))
-            output.append(line)
-            if self.eos_string in line:
-                break
-
-        return ''.join(output)
-
-
 def invoke_docker(env, files, run_cmd, out_bytes=False):
     if env.docker is None:
         setup_docker(env)
@@ -179,17 +148,24 @@ def invoke_docker(env, files, run_cmd, out_bytes=False):
 
 
 if I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE:
-    def setup_docker():
-        global fake_docker_id
-        fake_docker_id = random.randint(0, 1000000)
-        os.mkdir("/tmp/fakedocker_%d"%n)
-    
+
+    class DockerJob:
+        def __init__(self, container_id, eos_string):
+            raise NotImplementedError("Thsi test is not implemented in unsafe mode yet")
+        
+    def setup_docker(env):
+        import random
+        env.fake_docker_id = random.randint(0, 1000000)
+        os.mkdir("/tmp/fakedocker_%d"%env.fake_docker_id)
+        
     def invoke_docker(env, files, run_cmd, out_bytes=False):
-        # TODO: test this
+        if env.fake_docker_id is None:
+            setup_docker(env)
+
         for file_name, file_content in files.items():
-            with open("/tmp/fakedocker_%d/%s"%(fake_docker_id, file_name), "wb") as f:
+            with open("/tmp/fakedocker_%d/%s"%(env.fake_docker_id, file_name), "wb") as f:
                 f.write(file_content)
-        proc = subprocess.run(run_cmd, cwd="/tmp/fakedocker_%d"%fake_docker_id, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.run(run_cmd, cwd="/tmp/fakedocker_%d"%env.fake_docker_id, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         if out_bytes:
             return proc.stdout + proc.stderr

@@ -70,11 +70,24 @@ Contiguous US	3,120,428	8,081,869	2,954,843	7,653,006	165,589	428,865	5.3%
  United States	3,805,927	9,857,306	3,535,932	9,158,022	269,995	699,284	7.1%
 
 List for me each of the states that have more than 20,000 square kilometers of water, from lowest to highest. Don't list any other states.
+
 '''
 
-TestStateTable = question >> LLMRun() >> LLMRun("This is a student answer about which states have the most water: \n<A>\n\nThe correct answer is: California, Louisiana, Wisconsin, Florida, Michigan, and Alaska (in that order).\n\nDoes the student answer exactly these states in this order? Think out loud about their answer. Then, if the student got the states in this order, answer 'The student passes' otherwise answer 'The student fails'.\n\n") >> SubstringEvaluator("student passes")
+stepbystep = """To answer this question follow these steps in order:
+1. List just the amount of water in each state.
+2. Filter those to ones with over 20k square kilometers of water.
+3. Sort them from lowest to highest.
+4. Say "The final answer is" and list the states in that order.
+
+"""
+
+evaluation = "This is a student answer about which states have the most water: \n<A>\n\nThe correct answer is: California, Louisiana, Wisconsin, Florida, Michigan, and Alaska (in that order).\n\nDoes the student answer exactly these states in this order? Think out loud about their answer. Then, if the student got the states in this order, answer 'The student passes' otherwise answer 'The student fails'.\n\n"
+
+
+TestStateTable = question >> LLMRun() >> LLMRun(evaluation) >> SubstringEvaluator("student passes")
+TestStateTableStepbystep = (question + stepbystep) >> LLMRun() >> LLMRun(evaluation) >> SubstringEvaluator("student passes")
 
 
 if __name__ == "__main__":
-    print(run_test(TestStateTable))
+    print(run_test(TestStateTableStepbystep))
 

@@ -10,7 +10,8 @@ class VertexAIModel:
     def __init__(self, name):
         self.name = name
 
-        vertexai.init(project="practical-poisoning", location="us-central1")
+        project_id = json.load(open("config.json"))['llms']['vertexai']['project_id'].strip()
+        vertexai.init(project=project_id, location="us-central1")
 
         if 'gemini' in name:
             self.chat_model = GenerativeModel("gemini-pro")
@@ -20,7 +21,11 @@ class VertexAIModel:
 
     def make_request(self, conversation, add_image=None, logit_bias=None, skip_cache=False, temperature=0.3, top_p=1, max_tokens=2048, stream=False, safe_mode=False, random_seed=None):
         if 'gemini' in self.name:
-            response = self.chat_model.generate_content(conversation)
+            conversation = [" " if c == "" else c for c in conversation]
+            response = self.chat_model.generate_content(conversation, generation_config={
+                "temperature": 0.2,
+                "max_output_tokens": 2048,
+              })
         else:
             conversation_pairs = conversation[:-1]
             conversation_pairs = [(a, b) for a, b in zip(conversation_pairs[::2], conversation_pairs[1::2])]

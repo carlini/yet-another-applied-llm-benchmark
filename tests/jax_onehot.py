@@ -15,4 +15,4 @@ TestJaxOneHot = question >> LLMRun() >> ExtractCode() >> Echo() >>  PythonRun(te
                                                                     
 
 if __name__ == "__main__":
-    print(run_test(TestNumbaRref))
+    print(run_test(TestJaxOneHot))

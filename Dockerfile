@@ -15,7 +15,8 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     gcc \
     curl \
-    sqlite3
+    sqlite3 \
+    gdb
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -29,7 +30,7 @@ RUN apt-get update && apt-get install -y \
 
 
 RUN python3.11 -m pip install --upgrade pip && \
-    pip install numpy scipy numba Pillow jax jaxlib python-chess 
+    pip install numpy scipy numba Pillow jax jaxlib python-chess torch
 
 
 # Install Rust

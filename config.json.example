@@ -1,8 +1,13 @@
 {
-    "api_keys": {
-      "openai": "TODO",
-      "mistral": "TODO",
-      "claude": "TODO",
-      "gemini": "TODO"
+    "llms": {
+        "vertexai": {
+            "project_id": "TODO"
+        },
+        "openai": {
+            "api_key": "TODO"
+        },
+        "mistral": {
+            "api_key": "TODO"
+        }
     }
 }

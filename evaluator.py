@@ -7,6 +7,7 @@ import time
 import io
 import docker
 import inspect
+import re
 
 import numpy as np
 
@@ -16,7 +17,7 @@ import docker_controller
 from docker_controller import invoke_docker, DockerJob
 
 
-LLM = "eval_llm"
+LLM = "llm"
 EVAL_LLM = "eval_llm"
 VISION_EVAL_LLM = "vision_eval_llm"
 
@@ -26,6 +27,7 @@ def RetryFixCodeErrors(self, conversation, error_message):
 
 class Env:
     docker = None
+    fake_docker_id = None
     container = None
     docker_job = None
 
@@ -194,6 +196,19 @@ class SubstringEvaluator(Node):
         else:
             yield False, f"Substring {self.substr} not found in output. Full log: {output}"
 
+class ContainsIntEvaluator(Node):
+    def __init__(self, num):
+        self.num = num
+
+    def __call__(self, output):
+        all_integers = re.findall(r'-?[\d,]*\d+\.?\d*', output)
+        all_integers = [x.replace(",", "") for x in all_integers]
+        print("Testing", output, self.num, all_integers)
+        if str(self.num) in all_integers:
+            yield True, f"Integer {self.num} found in output. Full log: {output}"
+        else:
+            yield False, f"Integer {self.num} not found in output. Full log: {output}"
+            
 class EqualEvaluator(Node):
     def __init__(self, goal):
         self.goal = goal
@@ -235,14 +250,7 @@ class ExtractCode(Node):
         self.lang = lang
 
     def try_extract(self, output):
-        output = output.replace("```python", "```")
-        output = output.replace("```html", "```")
-        output = output.replace("```c", "```")
-        output = output.replace("```cpp", "```")
-        output = output.replace("```rust", "```")
-        output = output.replace("```sql", "```")
-        output = output.replace("```sh", "```")
-        output = output.replace("```diff", "```")
+        output = re.sub('```[a-z]*', '```', output)
         if "```" in output:
             yield output.split("```")[1] + "\n" + self.postfix
             out1 = "\n".join(output.split("```")[1::2])
@@ -273,14 +281,6 @@ class ExtractCode(Node):
 
         for maybe in self.try_extract(output):
             yield maybe
-
-
-
-#class LatexCompiler(Node):
-#    def __call__(code):
-#        open("/tmp/a.tex", "w").write(code)
-#        output = os.popen("pdflatex /tmp/a.tex").read()
-#        return output
 
 class MakeFile(Node):
     def __init__(self, name):
@@ -361,10 +361,7 @@ class StartDockerJob(Node):
 
     def __call__(self, text):
         self.env.docker_job = DockerJob(self.env.container.id, self.eos_string)
-        print("ID", self.env.container.id)
-        print("GO!", self.command)
         out = self.env.docker_job(self.command)
-        print("DONE")
 
         yield out
 

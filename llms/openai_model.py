@@ -7,8 +7,7 @@ import json
 
 class OpenAIModel:
     def __init__(self, name):
-        api_key = json.load(open("config.json"))['api_keys']['openai'].strip()
-        print('API key is ',api_key)
+        api_key = json.load(open("config.json"))['llms']['openai']['api_key'].strip()
         self.client = OpenAI(api_key=api_key)
         self.name = name
 

@@ -1,6 +1,6 @@
 from evaluator import *
 
-TAGS = ['code', 'python', 'data', 'performance']
+TAGS = ['code', 'python', 'performance']
 import collections
 
 question = """

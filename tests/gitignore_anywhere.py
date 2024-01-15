@@ -6,7 +6,7 @@ question = """
 gitignore any file called .KEYFILE anywhere
 """
 
-TestWhatIsAutoModel = question >> LLMRun() >> SubstringEvaluator("**/.KEYFILE")
+TestWhatIsStarStar = question >> LLMRun() >> SubstringEvaluator("**/.KEYFILE")
 
 if __name__ == "__main__":
-    print(run_test(TestWhatIsAutoModel))
+    print(run_test(TestWhatIsStarStar))

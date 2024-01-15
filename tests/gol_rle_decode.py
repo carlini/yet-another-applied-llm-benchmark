@@ -39,7 +39,7 @@ o64b3o$9o67bo$9b3o63bo$o7bo2bo$9b2o3$4b2o$o3b3o$o5b2obo5b2o$bo4bo2bo5b
 
 test_case, answer = make_python_test([(f"(np.array(rle_to_arr('''{rle}''', 101, 77),dtype=np.uint32).flatten() * np.arange(77*101)).sum()", "1563304")])
 
-TestProgramSqrtWithAdd = question >> LLMRun() >> ExtractCode() >> PythonRun(test_case) >> SubstringEvaluator(answer)
+TestRLEDecode = question >> LLMRun() >> ExtractCode() >> PythonRun(test_case) >> SubstringEvaluator(answer)
 
 if __name__ == "__main__":
-    print(run_test(TestProgramSqrtWithAdd))
+    print(run_test(TestRLEDecode))

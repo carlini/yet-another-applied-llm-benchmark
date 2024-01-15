@@ -13,9 +13,9 @@ security_group.authorize_egress(
 
 answer = 'Ipv6Ranges'
 
-TestImgResize = question >> LLMRun() >>  Echo()  >> SubstringEvaluator(answer)
+TestAWSV6 = question >> LLMRun() >>  Echo()  >> SubstringEvaluator(answer)
 
 if __name__ == "__main__":
-    print(run_test(TestImgResize))
+    print(run_test(TestAWSV6))
 
 

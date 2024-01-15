@@ -43,7 +43,7 @@ def test():
     return True
 
 
-TestImgResize = Setup(setup) >> question >> LLMRun() >> ExtractCode() >> Echo() >> PythonRun() >> PyEvaluator(test)
+TestImgResize = Setup(setup) >> question >> LLMRun() >> ExtractCode(keep_main=True) >> Echo() >> PythonRun() >> PyEvaluator(test)
 
 if __name__ == "__main__":
     print(run_test(TestImgResize))

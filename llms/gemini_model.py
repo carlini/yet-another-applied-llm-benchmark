@@ -5,11 +5,12 @@ class GeminiModel:
     def __init__(self, name):
         self.name = name
         self.api_key = json.load(open("config.json"))['api_keys']['gemini'].strip()
+        self.project_id = json.load(open("config.json"))['llms']['vertexai']['project_id'].strip()
         self.headers = {
             'Authorization': f'Bearer {self.api_key}',  # Adjust if the API expects a different kind of authentication
             'Content-Type': 'application/json'
         }
-        self.endpoint = f"https://us-central1-aiplatform.googleapis.com/v1/projects/practical-poisoning/locations/us-central1/publishers/google/models/{name}:streamGenerateContent?alt=sse"
+        self.endpoint = f"https://us-central1-aiplatform.googleapis.com/v1/projects/{project_id}/locations/us-central1/publishers/google/models/{name}:streamGenerateContent?alt=sse"
 
     def make_request(self, conversation, add_image=None, logit_bias=None, skip_cache=False, temperature=0.3, top_p=1, max_tokens=1024, stream=False, safe_mode=False, random_seed=None):
         # Prepare the conversation messages in the required format
@@ -23,8 +24,8 @@ class GeminiModel:
           "contents": formatted_conversation,
           "generation_config": {
             "temperature": 0.2,
-            "topP": 0.8,
-            "topK": 40,
+            "topP": 0.3,
+            "topK": 10,
             "maxOutputTokens": 2048,
           }
         }

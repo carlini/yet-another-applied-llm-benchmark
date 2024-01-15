@@ -76,6 +76,7 @@ def test_ok():
 
 def do_extract(x):
     global to_send
+    x = x.replace("```sql","```")
     to_send = x.split("```")[1]
     return to_send
 
@@ -87,6 +88,6 @@ def do_prepare(x):
 
 
 TestSqlExplore = Setup(setup) >> StartDockerJob("sqlite3 people.db", eos_string="sqlite>") >> question >> UntilDone(PyEvaluator(test_ok), (LLMConversation() >> PyFunc(do_extract) >> SendStdoutReceiveStdin() >> PyFunc(do_prepare)), max_iters=10) >> PyEvaluator(test_ok)
-
+ 
 if __name__ == "__main__":
     print(run_test(TestSqlExplore))

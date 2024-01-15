@@ -7,7 +7,7 @@ What does the VPBROADCASTB instruction do?
 """
 
 evaluation = """
-Below is a student's answer to a question about what a particular C expression evaluates to: <A>
+Below is a student's answer to a question about what a particular instruction does: <A>
 
 Does the student's say something similar to "Load integer data from the source operand (the second operand) and broadcast to all elements of the destination operand (the first operand)."?
 

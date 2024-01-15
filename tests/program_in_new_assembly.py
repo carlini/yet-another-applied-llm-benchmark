@@ -9,6 +9,7 @@ class AssemblyEmulator:
         self.instruction_pointer = 0
         self.instructions = instructions.split("\n")
         self.flag = False
+        print(instructions)
 
     def run(self):
 

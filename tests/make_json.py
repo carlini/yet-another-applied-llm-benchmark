@@ -48,7 +48,7 @@ gpt2-xl is 1.5b parameters.
 """
 
 
-TestMakeJson = question >> LLMRun() >> ExtractJSON() >> JSONSubsetEvaluator({
+TestMakeJson = question >> LLMRun() >> Echo() >> ExtractJSON() >> JSONSubsetEvaluator({
   "Mistral-7B-v0.1": {"size": 7, "dataset": "", "family": "Mistral"},
   "RedPajama-INCITE-7B-Base": {"size": 7, "dataset": "", "family": "RedPajama"},
   "RedPajama-INCITE-Base-3B-v1": {"size": 3, "dataset": "", "family": "RedPajama"},

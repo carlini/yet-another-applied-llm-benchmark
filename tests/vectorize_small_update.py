@@ -9,7 +9,7 @@ def update(high, highest_number, delta):
     return high
 
 question = """
-Vectorize this update loop:
+Vectorize this update loop. Call the function `update`:
 
 import numpy as np
 
