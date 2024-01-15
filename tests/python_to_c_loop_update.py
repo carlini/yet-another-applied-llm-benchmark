@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if a model can convert a python program to c, with a loop that makes it difficult."
+
 TAGS = ['code', 'python', 'c']
 
 question = """

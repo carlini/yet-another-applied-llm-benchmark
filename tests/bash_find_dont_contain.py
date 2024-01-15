@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if a model can implement (the negation of) a simple bash 1-liner searching for files that don't contain some text."
+
 TAGS = ['bash']
 
 question = "In bash list all files in cwd that don't contain asdf in the contents (case-ignore)"

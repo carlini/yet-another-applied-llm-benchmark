@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can identify the error in an AWS Lambda code for authorizing a new network. This type of error is generally difficult to find via search."
+
 TAGS = ['explain']
 
 question = """This a code for aws lambda to authorize a new network, what is wrong with this :

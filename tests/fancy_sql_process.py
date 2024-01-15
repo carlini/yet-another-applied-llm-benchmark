@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can generate a Python program that retrieves data from a SQL file."
+
 TAGS = ['sql']
 
 question = """

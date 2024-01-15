@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can implement a sqrt function."
+
 TAGS = ['code', 'python']
 
 question = """

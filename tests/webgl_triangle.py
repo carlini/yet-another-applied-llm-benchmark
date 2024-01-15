@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can generate an HTML file with WebGL code that draws an image."
+
 TAGS = ['code', 'visual']
 
 question = """

@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if a model will follow instructions to the letter without lots of cajoling. Thinking in base64 is also interesting."
+
 TAGS = ['explain', 'fun']
 import base64 
 

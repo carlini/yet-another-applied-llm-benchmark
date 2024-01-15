@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can implement some string logic given a fuzzy description."
+
 TAGS = ['code', 'python']
 
 question = """

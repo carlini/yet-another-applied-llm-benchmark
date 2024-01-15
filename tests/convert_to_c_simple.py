@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can rewrite a very simple Python program into an equivalent C program."
+
 TAGS = ['code', 'c']
 from llm import llm
 
@@ -18,9 +20,9 @@ def my_sqrt(number, precision=0.0001):
 test_case, answer = make_c_test([("(int)(my_sqrt(12345, .001)*10)", "1111")])
 
 
-TestProgramRewriteC = question >> LLMRun() >> ExtractCode() >> CRun(test_case) >> SubstringEvaluator(answer)
+TestProgramRewriteCSimple = question >> LLMRun() >> ExtractCode() >> CRun(test_case) >> SubstringEvaluator(answer)
 
 
 if __name__ == "__main__":
     from llm import llm
-    print(run_test(TestProgramRewriteC))
+    print(run_test(TestProgramRewriteCSimple))

@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can identify the buf and fix a program that handles python tracebacks. Useful to know if the model can handle more advanced python libraries."
+
 TAGS = ['code', 'fix']
 
 question = """

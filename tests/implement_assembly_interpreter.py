@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can implement an interpreter for a new assembly language from a text description."
+
 TAGS = ['code', 'python']
 
 question = """Here is the description of a new assembly language:

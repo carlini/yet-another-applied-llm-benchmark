@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can understand a vague error for an emacs lisp question."
+
 TAGS = ['explain']
 
 question = """

@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if a model can write a program that directly writes a jpeg file. This requires precise understanding of the jpeg spec."
+
 TAGS = ['code', 'python', 'visual']
 
 question = """

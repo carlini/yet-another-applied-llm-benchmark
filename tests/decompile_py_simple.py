@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can disassemble a simple Python function from its bytecode."
+
 TAGS = ['code', 'python']
 
 question = """

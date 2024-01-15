@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can identify and fix a bug in a given jax.numpy function."
+
 TAGS = ['code', 'python']
 
 question = """

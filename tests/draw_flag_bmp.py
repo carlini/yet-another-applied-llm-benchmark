@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can write a C program that draws an image. This test requires the ability to understand the .bmp specification, and draw a flag that can be correctly parsed and seen by the evaluator."
+
 TAGS = ['code', 'c', 'visual']
 
 question = """

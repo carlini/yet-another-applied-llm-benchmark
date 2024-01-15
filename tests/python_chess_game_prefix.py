@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can correctly call a python API for a moderately popular python library."
+
 TAGS = ['code', 'python']
 
 def update(high, highest_number, delta):

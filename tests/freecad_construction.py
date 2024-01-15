@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model understands a rambling question about how to make construction circle in FreeCAD."
+
 TAGS = ['explain', 'fun']
 
 question = """

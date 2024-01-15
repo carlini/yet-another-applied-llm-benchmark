@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can rewrite a given Python program into an equivalent C program."
+
 TAGS = ['code', 'c']
 
 question = """

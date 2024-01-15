@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model knows how to use the strided trick with numpy."
+
 TAGS = ['code', 'python', 'performance']
 
 question = """

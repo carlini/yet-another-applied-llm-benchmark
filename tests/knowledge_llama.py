@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test the knowledge cutoff of the model to see if it knows the LLAMA-2 hidden dimension size."
+
 TAGS = ['explain']
 
 question = """

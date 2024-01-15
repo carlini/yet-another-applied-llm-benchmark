@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can process a large table of text and identify rows with specific values."
+
 TAGS = ['data']
 
 question = '''

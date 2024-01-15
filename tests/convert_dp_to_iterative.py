@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can understand a DP algorithm and then convert it into an iterative implementation."
+
 TAGS = ['code', 'performance', 'python']
 
 my_code = """

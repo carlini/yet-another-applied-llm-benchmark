@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can replace a for loop with a vectorized version."
+
 TAGS = ['code', 'python', 'performance']
 
 def update(high, highest_number, delta):

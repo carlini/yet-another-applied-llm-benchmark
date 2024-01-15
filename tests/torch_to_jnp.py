@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can convert a torch neural network to a jax numpy model."
+
 TAGS = ['code', 'python']
 
 question = """

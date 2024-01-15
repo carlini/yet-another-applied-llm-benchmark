@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can interpret vague questions and will respond with the answer I want, not the answer that's easy to find."
+
 TAGS = ['explain']
 
 question = """

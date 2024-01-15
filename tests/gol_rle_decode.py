@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "This test case tests if the model can convert a Game of Life pattern represented in RLE format to a numpy array."
+
 TAGS = ['code', 'python']
 
 question = """

@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can optimize a given Python program for speed and memory efficiency."
+
 TAGS = ['code', 'performance', 'python']
 
 question = """

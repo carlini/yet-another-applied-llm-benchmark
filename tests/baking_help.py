@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can identify a missing incredient in a recipe. Identifying incorrect steps is much harder than missing steps."
+
 TAGS = ['explain', 'fun']
 
 question = """
@@ -12,8 +14,8 @@ Below is a student's answer to a question on what is missing from some pancake r
 Does the student mention that baking powder or baking soda is missing? Think out loud, and then end your answer with either the string "The student passes" or "The student fails".
 """
 
-TestPrintHello = question >> LLMRun() >> LLMRun(evaluation, llm=EVAL_LLM) >> SubstringEvaluator("student passes")
+TestMissingStep = question >> LLMRun() >> LLMRun(evaluation, llm=EVAL_LLM) >> SubstringEvaluator("student passes")
     
 
 if __name__ == "__main__":
-    print(run_test(TestPrintHello))
+    print(run_test(TestMissingStep))

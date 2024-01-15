@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can write a bash script that renames files with a specific pattern."
+
 TAGS = ['code', 'bash']
 
 question = """

@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can correctly identify a block of text is uuencoded."
+
 TAGS = ['explain']
 
 question = """

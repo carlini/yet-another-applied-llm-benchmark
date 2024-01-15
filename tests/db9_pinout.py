@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if a model knows about old computer ports when prompted ambiguously."
+
 TAGS = ['explain']
 
 question = """

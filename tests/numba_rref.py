@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if a model can rewrite a fairly complex Python function to Numba."
+
 TAGS = ['code', 'python', 'performance']
 
 question = """

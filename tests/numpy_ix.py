@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if a model can identify the _ix function as a method for simplifying some code."
+
 TAGS = ['explain', 'python']
 
 question = '''I want to vectorize a function

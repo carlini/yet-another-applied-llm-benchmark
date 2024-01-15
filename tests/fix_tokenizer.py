@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can identify and fix an issue with a tokenizer in a Python code snippet. Identifying the problem is in the regex, and fixing the regex, are both hard."
+
 TAGS = ['code', 'fix', 'python']
 
 question = """

@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can correctly explain what the VPBROADCASTB instruction does."
+
 TAGS = ['explain']
 
 question = """

@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can rewrite a given python in C that performs reduced row echelon form (rref) on a 2D matrix."
+
 TAGS = ['code', 'c', 'performance']
 
 question = """

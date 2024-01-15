@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can generate a .patch file to fix a bug in a given Python code."
+
 TAGS = ['code', 'fix', 'python']
 
 code = """import re

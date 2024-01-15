@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model understands the CRC-32 spec well enough to implement it."
+
 TAGS = ['code', 'c']
 import zlib
 

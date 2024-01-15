@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can write a program in a new assembly language. This ability to learn a new language on-the-fly is important for many tasks."
+
 TAGS = ['code']
 
 class AssemblyEmulator:

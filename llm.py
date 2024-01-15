@@ -51,8 +51,8 @@ class LLM:
         pickle.dump(self.cache, open(f"tmp/cache-{self.name.split('/')[-1]}.p","wb"))
         return response
 
-#llm = LLM("gpt-3.5-turbo")
-llm = LLM("gpt-4-1106-preview")
+llm = LLM("gpt-3.5-turbo")
+#llm = LLM("gpt-4-1106-preview")
 #llm = LLM("mistral-small")
 eval_llm = LLM("gpt-4-1106-preview")
 vision_eval_llm = LLM("gpt-4-vision-preview")

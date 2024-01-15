@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can write a Python script that merges a list of file paths into 16 files of approximately equal size."
+
 TAGS = ['code', 'python']
 
 question_easy = """

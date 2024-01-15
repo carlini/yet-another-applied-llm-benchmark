@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can generate a python program that defines dataflow DSL."
+
 TAGS = ['code', 'python']
 
 question = """

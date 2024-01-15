@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can write a Python function with a straightforward regex."
+
 TAGS = ['code', 'python']
 
 question = """

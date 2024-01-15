@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can successfully convert unstructured data to JSON."
+
 TAGS = ['data']
 
 question = """

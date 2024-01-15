@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can guide a user through a series of git commands to identify and cherrypick a specific commit from a branch onto the main branch."
+
 TAGS = ['bash', "git", "agent"]
 
 

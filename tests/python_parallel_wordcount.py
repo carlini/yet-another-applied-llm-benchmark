@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can parallelize a python program to perform a wordcount."
+
 TAGS = ['code', 'python', 'performance']
 import collections
 

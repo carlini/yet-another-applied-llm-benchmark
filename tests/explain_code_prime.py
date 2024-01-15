@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can interpret a minified JavaScript function and explain its function."
+
 TAGS = ['code', 'explain']
 
 question = """

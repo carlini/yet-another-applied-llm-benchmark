@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can successfully uudecode a given string."
+
 TAGS = ['explain']
 
 question = """

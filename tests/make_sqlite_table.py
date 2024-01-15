@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can generate a SQL query to create a database table."
+
 TAGS = ['sql']
 
 question = """

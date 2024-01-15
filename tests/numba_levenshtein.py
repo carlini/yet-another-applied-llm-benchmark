@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can generate a numba implementation of the Levenshtein distance algorithm."
+
 TAGS = ['code', 'python', 'performance']
 
 question = """

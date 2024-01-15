@@ -1,8 +1,10 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can provide the correct bash command to list files in a directory and sort them by the least significant digit of their size."
+
 TAGS = ['bash']
 
-question = 'In bash how do I list all files in foo/ but sort the files by the least significant digit of their size so 2820 comes first and then 281771 and finally 2279. I want just the file names.'
+question = 'In bash how do I list all files in foo/ but sort the files by the least significant digit of their size so 2820 comes first and then 281771 and finally 2279. I want just the file names e.g., file1 otherfile lastfile.'
 
 
 def setup_fn():

@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can fix and explain a bug in PyTorch code related to forgetting to zero gradients."
+
 TAGS = ['code', 'python', 'fix']
 
 code = """

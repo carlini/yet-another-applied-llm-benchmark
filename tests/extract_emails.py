@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can accurately extract and identify invalid email addresses from a given text file. Models that are \"overly safe\" will fail."
+
 TAGS = ['data']
 
 question = """

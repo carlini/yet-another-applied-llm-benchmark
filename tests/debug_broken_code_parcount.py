@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if a model can explain a bug in a parallelized wordcount function."
+
 TAGS = ['explain', 'python', 'fix']
 import collections
 

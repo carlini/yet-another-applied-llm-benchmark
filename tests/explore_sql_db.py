@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can interact with an SQLite database and provide the correct command to add a new person with specific criteria."
+
 TAGS = ['sql', 'agent']
 
 question = """

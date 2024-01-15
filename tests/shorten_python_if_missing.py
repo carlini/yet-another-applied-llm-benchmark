@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can shorten a line of python with an equal line."
+
 TAGS = ['code', 'python']
 
 question = """

@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can resize several images in a given subdirectory."
+
 TAGS = ['code', 'python']
 
 question = """Write function resize_image in python that open get a folder path as in put and looks for all of the images files in that folder using only pillow and resize them to 32x32 and overwrite it. Just give me the python code that I can run by python code.py and the default folder is /tmp """

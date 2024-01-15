@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can correctly convert a list of indexes to a one-hot vector in Python using JAX."
+
 TAGS = ['code', 'python']
 
 question = """

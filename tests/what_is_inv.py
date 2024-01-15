@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "This test case is designed to check if the model can correctly identify the Python operator used for the tilde (~) symbol."
+
 TAGS = ['explain', 'python']
 
 question = """

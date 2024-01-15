@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can guide a user in a conversation to setup a git repo."
+
 TAGS = ['bash', "git", "agent"]
 
 question = """

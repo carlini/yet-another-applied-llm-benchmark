@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can write a Python function that removes excess indentation from a given block of code."
+
 TAGS = ['code', 'python']
 
 question = """

@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can write a rust program that performs parallel word counting."
+
 TAGS = ['code', 'rust', 'performance']
 import collections
 

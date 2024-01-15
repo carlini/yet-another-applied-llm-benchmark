@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "A for-fun test to see if the model can go movie title -> emoji -> movie title."
+
 TAGS = ['fun']
 
 question = """

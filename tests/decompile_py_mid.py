@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can disassemble Python bytecode and create a function that returns a list of prime numbers and their negations."
+
 TAGS = ['code', 'python']
 
 question = """

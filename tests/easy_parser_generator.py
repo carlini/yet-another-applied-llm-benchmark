@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can understand a vague BNF-style grammar and write a Python function that evaluates expressions based on the grammar rules."
+
 TAGS = ['code', 'python']
 
 question = """

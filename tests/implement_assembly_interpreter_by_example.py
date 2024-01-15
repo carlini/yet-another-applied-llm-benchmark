@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if the model can implement an interpreter for a new assembly language given an example."
+
 TAGS = ['code', 'python']
 
 primes = """
