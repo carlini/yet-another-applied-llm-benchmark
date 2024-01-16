@@ -77,16 +77,18 @@ def test_ok():
     
 
 def do_extract(x):
-    global to_send
-    x = x.replace("```sql","```")
-    to_send = x.split("```")[1]
-    return to_send
+    try:
+        x = x.replace("```sql","```")
+        to_send = x.split("```")[1]
+        return to_send
+    except:
+        return ""
 
 
 def do_prepare(x):
     print("Preparing to pass back", x)
     x = x.replace("\nsqlite>","")
-    return f"In response to your input {to_send} I get an OUTPUT: ```{x}```.\n\nWhat is the exact command I should run next? Start your response with INPUT:"
+    return f"I get an OUTPUT: ```{x}```.\n\nWhat is the exact command I should run next? Start your response with INPUT:"
 
 
 TestSqlExplore = Setup(setup) >> StartDockerJob("sqlite3 people.db", eos_string="sqlite>") >> question >> UntilDone(PyEvaluator(test_ok), (LLMConversation() >> PyFunc(do_extract) >> SendStdoutReceiveStdin() >> PyFunc(do_prepare)), max_iters=10) >> PyEvaluator(test_ok)

@@ -2,3 +2,4 @@ docker
 numpy
 Pillow
 openai
+markdown

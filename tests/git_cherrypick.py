@@ -58,13 +58,12 @@ def setup():
     """).read())
 
 def do_extract(x):
-    global to_send
     to_send = x.split("`")[1]
     return to_send
 
 def do_prepare(x):
     print("Preparing to pass back", x)
-    return f"In response to your input {to_send} I get an OUTPUT: `{x}`.\n\nWhat is the exact command I should run next? Start your response with INPUT:"
+    return f"I get an OUTPUT: `{x}`.\n\nWhat is the exact command I should run next? Start your response with INPUT:"
     
 TestGitCherrypick = Setup(setup) >> Echo() >> question >> UntilDone(PyEvaluator(test_ok), (LLMConversation() >> PyFunc(do_extract) >> TerminalRun() >> PyFunc(do_prepare)), max_iters=8) >> PyEvaluator(test_ok)
     

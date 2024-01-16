@@ -4,12 +4,6 @@ DESCRIPTION = "Test if the model can correctly call a python API for a moderatel
 
 TAGS = ['code', 'python']
 
-def update(high, highest_number, delta):
-    for i in range(len(high)):
-        if i != highest_number:
-            high[i] = min(high[i], high[highest_number] + delta[highest_number] - delta[i])
-    return high
-
 question = """
 In python-chess I have a game = chess.pgn.read_game(pgn).
 
