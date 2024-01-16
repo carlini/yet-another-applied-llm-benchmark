@@ -19,11 +19,12 @@ def run_one_test(test, test_llm, eval_llm, vision_eval_llm):
     return False
                     
 
+
 def run_all_tests(test_llm):
     test_llm = llm.LLM(model)
     sr = {}
     for f in os.listdir("tests"):
-        if not f.endswith(".py"): continue
+        if not f.endswith(".py")  or 'basic' not in f : continue
         try:
             spec = importlib.util.spec_from_file_location(f[:-3], "tests/" + f)
             module = importlib.util.module_from_spec(spec)
@@ -56,7 +57,7 @@ def run_all_tests(test_llm):
 def generate_report(data, tags):
     # Recalculating all keys to ensure they are in the same order
     all_keys = sorted({key for inner_dict in data.values() for key in inner_dict.keys()})
-
+    print(all_keys,tags.keys())
     assert set(all_keys) == set(tags.keys())
     
     # Calculating mean correctness for each column (key in inner dictionaries)
@@ -133,10 +134,12 @@ function hiderows() {
     with open(html_file_path_transposed_sorted, "w") as file:
         file.write(html_content)
 
+
+
 def get_tags():
     tags = {}
     for f in os.listdir("tests"):
-        if not f.endswith(".py"): continue
+        if not f.endswith(".py") or 'basic' not in f: continue
         try:
             spec = importlib.util.spec_from_file_location(f[:-3], "tests/" + f)
             module = importlib.util.module_from_spec(spec)
@@ -152,7 +155,7 @@ def get_tags():
 data = {}    
 #for model in ["mistral-tiny", "mistral-small", "mistral-medium", "gpt-3.5-turbo", "gpt-4-1106-preview"]:#, "/Users/Nicholas/Downloads/llama-2-13b-chat.Q4_K_M.gguf"]:
 #for model in ["/Users/Nicholas/Downloads/llama-2-13b-chat.Q4_K_M.gguf"]:
-for model in ["gpt-3.5-turbo", "gemini-pro", "chat-bison", "mistral-medium", "mistral-small", "mistral-tiny", "gpt-4-1106-preview"]:
+for model in ["gpt-3.5-turbo","gpt-4-1106-preview"]:#["gpt-3.5-turbo", "gemini-pro", "chat-bison", "mistral-medium", "mistral-small", "mistral-tiny", "gpt-4-1106-preview"]:
     data[model] = run_all_tests(model)
 
 print(data)

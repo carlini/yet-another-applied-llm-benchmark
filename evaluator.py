@@ -508,11 +508,14 @@ class LLMVisionRun(Node):
         yield out
 
 class Conversation:
-    def __init__(self, llm):
+    def __init__(self, llm,preample = ''):
         self.llm = llm
         self.history = []
+        self.preample = preample
 
     def __call__(self, msg):
+        if len(self.history)==0:
+            msg = self.preample + msg        
         self.history.append(msg)
         output = self.llm(self.history)
         self.history.append(output)

@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y \
 
 
 RUN python3.11 -m pip install --upgrade pip && \
-    pip install numpy scipy numba Pillow jax jaxlib python-chess sqlite3
+    pip install numpy scipy numba Pillow jax jaxlib python-chess 
 
 
 # Install Rust
