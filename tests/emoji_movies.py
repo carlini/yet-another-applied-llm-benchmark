@@ -17,6 +17,8 @@ you might might answer
 "Toy Story": ["🚀", "⚔️,", "🤖", "👽", "🌌"]}
 ```.
 
+Each emoji must be a single utf8 character. ABSOLUTELY NO ZERO WIDTH JOINING. (So, max(len(emoji) for movie in result.values() for emoji in movie) == 1)
+
 Now give me answers for these movies:
 
 ```["The Lion King", "The Nightmare Before Christmas", "The Godfather", "The Matrix", "Casablanca", "Raiders of the Lost Ark", "V for Vendetta", "The Princess Bride", "Back to the Future", "Dune"]```
@@ -44,15 +46,22 @@ What are the names of the movie titles?
 """
 
 def extract(x):
-    x = json.loads(x)
-    return str(list(x.values()))
+    try:
+        x = json.loads(x)
+    except:
+        print("Failed processing")
+        return ""
+    send = list(x.values())
+    # I'll be nice...
+    send = [[x for x in y if len(x) <= 2] for y in send]
+    return str(send).replace("], [", "],\n[")
 
 def count(x):
     try:
         x = json.loads(x)
         count = 0
         for correct, guessed in zip(["The Lion King", "The Nightmare Before Christmas", "The Godfather", "The Matrix", "Casablanca", "Raiders of the Lost Ark", "V for Vendetta", "The Princess Bride", "Back to the Future", "Dune"], x):
-            if correct == guessed:
+            if correct.lower() == guessed.lower():
                 count += 1
         return count >= 8, "OK"
     except:

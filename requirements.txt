@@ -3,3 +3,4 @@ numpy
 Pillow
 openai
 markdown
+pygments

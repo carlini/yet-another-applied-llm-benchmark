@@ -1,5 +1,7 @@
 from evaluator import *
 
+DESCRIPTION = "Test if a model can decompile a long (300 line) python bytecode function back to python."
+
 TAGS = ['code', 'python']
 
 question = """

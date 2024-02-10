@@ -36,11 +36,15 @@ mylist = list(range(100))
 random.shuffle(mylist)
 from functools import lru_cache
 
-{my_code}
+{my_code.replace("solve_dp", "my_solve_dp")}
 answer = solve_iterative(tuple(mylist), len(mylist)//8, 4)""",
-                                       "solve_dp(tuple(mylist), len(mylist)//8, 4)")])
+                                       "my_solve_dp(tuple(mylist), len(mylist)//8, 4)")])
 
-TestProgramRemoveDP = question >> LLMRun() >> ExtractCode() >> PythonRun(test_case) >> SubstringEvaluator(answer)
+def not_recursive(code):
+    return code.count("solve_iterative") == 1, ""
+
+TestProgramRemoveDP = question >> LLMRun() >> ExtractCode() >> \
+    (PyFunc(not_recursive) & (PythonRun(test_case) >> SubstringEvaluator(answer)))
 
 if __name__ == "__main__":
     print(run_test(TestProgramRemoveDP))

@@ -1,4 +1,7 @@
 {
+    "hparams": {
+        "temperature": 0.3,
+    },
     "llms": {
         "vertexai": {
             "project_id": "TODO"
@@ -7,6 +10,12 @@
             "api_key": "TODO"
         },
         "mistral": {
+            "api_key": "TODO"
+        },
+        "cohere": {
+            "api_key": "TODO"
+        },
+        "anthropic": {
             "api_key": "TODO"
         }
     }

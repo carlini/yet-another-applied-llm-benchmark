@@ -3,7 +3,6 @@ from evaluator import *
 DESCRIPTION = "Test if the model can rewrite a very simple Python program into an equivalent C program."
 
 TAGS = ['code', 'c']
-from llm import llm
 
 question = """
 Here's a python program. Please rewrite it in c with the type signature float my_sqrt(float, float).

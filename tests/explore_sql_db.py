@@ -9,11 +9,11 @@ I've just run `sqlite3 people.db` and you are now in the interpreter. I want to 
 
 On each round you should just give me just one command to type, I'll run it exactly as-is, and give you the exact output. I will not make any changes. So do not write any placholder text. I'll get started:
 
-INPUT: ```.version```
+INPUT: `.version`
 
 OUTPUT: ```SQLite 3.39.5 2022-10-14 20:58:05```
 
-INPUT: ```.database```
+INPUT: `.database`
 
 OUTPUT: ```main: people.db r/w```
 
@@ -76,13 +76,15 @@ def test_ok():
     return age == 25 and profession == 'Doctor'
     
 
+
 def do_extract(x):
+    if 'INPUT:' in x:
+        x = x.split("INPUT:")[1]
     try:
-        x = x.replace("```sql","```")
-        to_send = x.split("```")[1]
-        return to_send
+        to_send = x.split("`")[1]
     except:
-        return ""
+        to_send = x.split("\n")[0]
+    return to_send
 
 
 def do_prepare(x):

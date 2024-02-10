@@ -58,14 +58,19 @@ def setup():
     """).read())
 
 def do_extract(x):
-    to_send = x.split("`")[1]
+    if 'INPUT:' in x:
+        x = x.split("INPUT:")[1]
+    try:
+        to_send = x.split("`")[1]
+    except:
+        to_send = x.split("\n")[0]
     return to_send
 
 def do_prepare(x):
     print("Preparing to pass back", x)
     return f"I get an OUTPUT: `{x}`.\n\nWhat is the exact command I should run next? Start your response with INPUT:"
     
-TestGitCherrypick = Setup(setup) >> Echo() >> question >> UntilDone(PyEvaluator(test_ok), (LLMConversation() >> PyFunc(do_extract) >> TerminalRun() >> PyFunc(do_prepare)), max_iters=8) >> PyEvaluator(test_ok)
+TestGitCherrypick = Setup(setup) >> Echo() >> question >> UntilDone(PyEvaluator(test_ok), (LLMConversation() >> PyFunc(do_extract) >> TerminalRun() >> PyFunc(do_prepare)), max_iters=6) >> PyEvaluator(test_ok)
     
 
 if __name__ == "__main__":

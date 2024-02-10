@@ -12,7 +12,7 @@ def myfn():
     open("/tmp/query.sql", "w").write("SELECT * FROM people;")
     import os
     out = os.popen("sqlite3 -init /tmp/query.sql database.db .exit").read()
-    return "Nicholas" in out and "5" in out and "research" in out.lower(), ""
+    return "Nicholas" in out and "5" in out and "research" in out.lower()
 
 
 TestSqlMakeTable = question >> LLMRun() >> ExtractCode(manual="I'm going to run `sqlite3 database.db < /tmp/query.sql`. Given the following answer tell me exactly what to put into `query.sql`. DO NOT MODIFY THE CODE OR WRITE NEW CODE.\n<A>") >> Echo() >> SQLRun() >> PyEvaluator(myfn)

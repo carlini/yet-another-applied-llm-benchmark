@@ -22,7 +22,7 @@ def update(high, highest_number, delta):
     return high
 """
 
-test_case, answer = make_python_test([("list(update(np.array([2, 5, 9, 1, 2, 0, 3, 8]), 4, np.array([1, 2, 1, 4, 3, 2, 1, 2])))", "[2, 3, 4, 1, 2, 0, 3, 3]")])
+test_case, answer = make_python_test([("list(update(np.array([2, 5, 9, 1, 2, 0, 3, 8]), 4, np.array([1, 2, 1, 4, 3, 2, 1, 2])))", "[2, 3, 4, 1, 2, 0, 3, 3]")], header="import numpy as np")
 
 evaluation = """
 Below is a student's answer to a question about how to vectorize this loop:

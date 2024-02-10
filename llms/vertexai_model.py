@@ -9,23 +9,29 @@ import requests
 class VertexAIModel:
     def __init__(self, name):
         self.name = name
+        config = json.load(open("config.json"))
+        self.hparams = config['hparams']
+        self.hparams.update(config['llms']['mistral'].get('hparams') or {})
 
-        project_id = json.load(open("config.json"))['llms']['vertexai']['project_id'].strip()
+        self.name = name
+
+        project_id = config['llms']['vertexai']['project_id'].strip()
         vertexai.init(project=project_id, location="us-central1")
 
         if 'gemini' in name:
-            self.chat_model = GenerativeModel("gemini-pro")
+            self.chat_model = GenerativeModel(name)
         else:
             self.chat_model = ChatModel.from_pretrained(name)
 
 
-    def make_request(self, conversation, add_image=None, logit_bias=None, skip_cache=False, temperature=0.3, top_p=1, max_tokens=2048, stream=False, safe_mode=False, random_seed=None):
+    def make_request(self, conversation, add_image=None, max_tokens=2048, stream=False):
         if 'gemini' in self.name:
             conversation = [" " if c == "" else c for c in conversation]
-            response = self.chat_model.generate_content(conversation, generation_config={
-                "temperature": 0.2,
+            conf = {
                 "max_output_tokens": 2048,
-              })
+              }
+            conf.update(self.hparams)
+            response = self.chat_model.generate_content(conversation, generation_config=conf)
         else:
             conversation_pairs = conversation[:-1]
             conversation_pairs = [(a, b) for a, b in zip(conversation_pairs[::2], conversation_pairs[1::2])]
@@ -37,9 +43,13 @@ class VertexAIModel:
                          output_text=b,
                      ) for a,b in conversation_pairs]
             )
+            conf = {
+                "max_output_tokens": 2048,
+              }
+            conf.update(self.hparams)
             response = chat.send_message(
                 conversation[-1],
-                temperature=temperature, max_output_tokens=max_tokens
+                **conf
             )
         try:
             return response.text

@@ -5,7 +5,11 @@ import requests
 class MistralModel:
     def __init__(self, name):
         self.name = name
-        self.api_key = json.load(open("config.json"))['llms']['mistral']['api_key'].strip()
+        config = json.load(open("config.json"))
+        self.hparams = config['hparams']
+        self.hparams.update(config['llms']['mistral'].get('hparams') or {})
+
+        self.api_key = config['llms']['mistral']['api_key'].strip()
     
         self.headers = {
             'Authorization': f'Bearer {self.api_key}',  # Adjust if the API expects a different kind of authentication
@@ -14,7 +18,7 @@ class MistralModel:
         }
         self.endpoint = "https://api.mistral.ai/v1/chat/completions"
 
-    def make_request(self, conversation, add_image=None, logit_bias=None, skip_cache=False, temperature=0.3, top_p=1, max_tokens=None):
+    def make_request(self, conversation, add_image=None, max_tokens=None):
         # Prepare the conversation messages in the required format
         formatted_conversation = [
             {"role": "user" if i % 2 == 0 else "assistant", "content": content}
@@ -23,12 +27,11 @@ class MistralModel:
 
         # Construct the data payload
         data = {
-            "model": self.name,  # Update with the desired model name as needed
+            "model": self.name,
             "messages": formatted_conversation,
-            "temperature": temperature,
-            "top_p": top_p,
             "max_tokens": max_tokens or 2048,
         }
+        data.update(self.hparams)
 
         # Make the POST request to the API endpoint
         response = requests.post(self.endpoint, headers=self.headers, data=json.dumps(data))

@@ -47,7 +47,7 @@ def setup():
     conn.close()
 
 
-TestSqlSubquery = Setup(setup) >> question >> LLMRun() >> ExtractCode(keep_main=True, lang='python') >> Echo() >> PythonRun() >> (SubstringEvaluator("Grace") & SubstringEvaluator("Grace"))
+TestSqlSubquery = Setup(setup) >> question >> LLMRun() >> ExtractCode(keep_main=True, lang='python') >> Echo() >> PythonRun() >> SubstringEvaluator("Grace")
 
 if __name__ == "__main__":
     print(run_test(TestSqlSubquery))

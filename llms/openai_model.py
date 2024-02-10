@@ -7,11 +7,15 @@ import json
 
 class OpenAIModel:
     def __init__(self, name):
-        api_key = json.load(open("config.json"))['llms']['openai']['api_key'].strip()
+        config = json.load(open("config.json"))
+        api_key = config['llms']['openai']['api_key'].strip()
         self.client = OpenAI(api_key=api_key)
         self.name = name
+        config = json.load(open("config.json"))
+        self.hparams = config['hparams']
+        self.hparams.update(config['llms']['openai'].get('hparams') or {})
 
-    def make_request(self, conversation, add_image=None, logit_bias=None, max_tokens=None):
+    def make_request(self, conversation, add_image=None, max_tokens=None):
         conversation = [{"role": "user" if i%2 == 0 else "assistant", "content": content} for i,content in enumerate(conversation)]
     
         if add_image:
@@ -29,10 +33,10 @@ class OpenAIModel:
                                           }
                                           ]
         kwargs = {
-            "logit_bias": logit_bias,
             "messages": conversation,
             "max_tokens": max_tokens,
         }
+        kwargs.update(self.hparams)
     
         for k,v in list(kwargs.items()):
             if v is None:
@@ -47,5 +51,6 @@ class OpenAIModel:
 
 if __name__ == "__main__":
     import sys
-    q = sys.stdin.read().strip()
+    #q = sys.stdin.read().strip()
+    q = "hello there"
     print(q+":", OpenAIModel("gpt-3.5-turbo").make_request([q]))

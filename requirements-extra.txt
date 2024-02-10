@@ -1,3 +1,4 @@
 llama-cpp-python
 anthropic
 google-cloud-aiplatform
+cohere

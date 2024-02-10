@@ -86,8 +86,8 @@ stepbystep = """To answer this question follow these steps in order:
 evaluation = "This is a student answer about which states have the most water: \n<A>\n\nThe correct answer is: California, Louisiana, Wisconsin, Florida, Michigan, and Alaska (in that order).\n\nDoes the student answer exactly these states in this order? Think out loud about their answer. Then, if the student got the states in this order, answer 'The student passes' otherwise answer 'The student fails'.\n\n"
 
 
-TestStateTable = question >> LLMRun() >> LLMRun(evaluation) >> SubstringEvaluator("student passes")
-TestStateTableStepbystep = (question + stepbystep) >> LLMRun() >> LLMRun(evaluation) >> SubstringEvaluator("student passes")
+TestStateTable = question >> LLMRun() >> ((LLMRun(evaluation, llm=EVAL_LLM) >> SubstringEvaluator("student passes")) & SubstringEvaluator("California") & SubstringEvaluator("Louisiana") & SubstringEvaluator("Wisconsin") & SubstringEvaluator("Wisconsin"))
+TestStateTableStepbystep = (question + stepbystep) >> LLMRun() >> ((LLMRun(evaluation, llm=EVAL_LLM) >> SubstringEvaluator("student passes")) & SubstringEvaluator("California") & SubstringEvaluator("Louisiana") & SubstringEvaluator("Wisconsin") & SubstringEvaluator("Wisconsin"))
 
 
 if __name__ == "__main__":

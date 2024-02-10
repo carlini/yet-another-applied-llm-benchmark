@@ -30,4 +30,4 @@ TestExplainWeirdC = question_harder >> LLMRun() >> LLMRun(evaluation, llm=EVAL_L
 
 
 if __name__ == "__main__":
-    print(run_test(TestExplainWeirdC))
+    print(run_test(TestExplainWeirdCEasy))

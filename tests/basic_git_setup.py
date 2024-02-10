@@ -23,7 +23,6 @@ Now your turn. What do you want to run? Do not explain yourself, just give me ex
 def test_ok():
     import os
     success = os.popen("git rev-list --all --count").read().strip() == "1"
-    print("SUCCESS", success)
     return success
 
 def setup():
@@ -34,8 +33,13 @@ def setup():
     os.popen('git config --global user.name "Your Name"').read()
 
 def do_extract(x):
-    print("Preparing to pass to bash", x.split("`")[1])
-    return x.split("`")[1]
+    if 'INPUT:' in x:
+        x = x.split("INPUT:")[1]
+    try:
+        to_send = x.split("`")[1]
+    except:
+        to_send = x.split("\n")[0]
+    return to_send
 
 def do_prepare(x):
     print("Preparing to pass back", x)

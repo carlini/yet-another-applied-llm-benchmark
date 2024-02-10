@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y \
     gcc \
     curl \
     sqlite3 \
-    gdb
+    gdb \
+    libssl-dev
 
 ENV DEBIAN_FRONTEND noninteractive
 
