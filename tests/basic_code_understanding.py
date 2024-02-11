@@ -1,6 +1,8 @@
 from evaluator import *
 
-TAGS = ['code', 'c']
+DESCRIPTION = "Test if a model can solve a simple capture-the-flag like entry in C."
+
+TAGS = ['c', "explain"]
 
 INPUT = '''#include <stdio.h>
 #include <stdlib.h>

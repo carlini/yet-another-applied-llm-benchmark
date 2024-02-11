@@ -119,7 +119,7 @@ def generate_report(data, tags, descriptions):
 
     #all_tests = sorted({key for inner_dict in data.values() for key in inner_dict.keys()})
     all_tests = [inner_dict.keys() for inner_dict in data.values()]
-    
+
     # keep only the tests that are in all models
     all_tests = set.intersection(*map(set, all_tests))
     all_tests = sorted(all_tests)
@@ -242,6 +242,9 @@ function hiderows() {
     html_content += "<table>"
     # Adding the transposed sorted header row (originally columns, now rows)
     html_content += "<tr><th>Question</th>" + "".join([f"<th>{key}<br/>({int(score_table.mean(1)[all_models.index(key)]*100)}%)</th>" for key in sorted_transposed_rows]) + "</tr>"
+
+    if not os.path.exists("evaluation_examples"):
+        os.mkdir("evaluation_examples")
     
     # Adding transposed sorted rows (originally keys from inner dictionaries, now columns)
     for idx,column_key in enumerate(sorted_transposed_columns):
@@ -403,7 +406,6 @@ function hiderows() {
             
             table = []
             for idx,output in enumerate(reasons[row_key][column_key]):
-                print(output)
 
                 output = output.split("\n")
                 remap = {}
@@ -418,7 +420,6 @@ function hiderows() {
                 for i in range(len(output)):
                     line = output[i]
                     if len(line) > 1000:
-                        print("LONG LINE", line[:100])
                         if line.startswith("b'"):
                             try:
                                 actual_bytes = ast.literal_eval(line)
@@ -470,7 +471,6 @@ function hiderows() {
                             
                         final_output.append(code_block)
 
-                print(final_output)
                 output = "".join(final_output)
 
 

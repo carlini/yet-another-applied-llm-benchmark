@@ -36,14 +36,10 @@ import fcntl
 # A LANGUAGE MODEL DIRECTLY ON YOUR COMPUTER WITH NO SAFETY CHECKS.
 I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE_OR_MAKING_THEM_HALT_AND_CATCH_FIRE = False
 
+BACKEND = "PODMAN"
+
 if not I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE_OR_MAKING_THEM_HALT_AND_CATCH_FIRE:
     import docker
-
-
-def setup_docker(env):
-    env.docker = docker.from_env()
-    env.container = env.docker.containers.run("llm-benchmark-image", detach=True, tty=True)
-
 
 def make_tar(files):
     file_like_object = io.BytesIO()
@@ -60,54 +56,100 @@ def make_tar(files):
     file_like_object.seek(0)
 
     return file_like_object
-
-def stop_and_remove_container(client, container_id):
-    # Stopping the container
-    client.containers.get(container_id).stop()
-
-    # Removing the container
-    client.containers.get(container_id).remove()
-
-def async_kill_container(client, container):
-    thread = threading.Thread(target=stop_and_remove_container, args=(client, container.id))
-    thread.daemon = True
-    thread.start()
     
 
-def safe_run(client, container, files, run_cmd):
-    tarfile = make_tar(files)
-
-    path = "/usr/src/app"
-    container.put_archive(path, tarfile)
-
-    exit_code, output = container.exec_run(run_cmd)
+if BACKEND == "DOCKER":
+    def setup_docker(env):
+        env.docker = docker.from_env()
+        env.container = env.docker.containers.run("llm-benchmark-image", detach=True, tty=True)    
     
-    return output
+    def stop_and_remove_container(client, container_id):
+        # Stopping the container
+        client.containers.get(container_id).stop()
+    
+        # Removing the container
+        client.containers.get(container_id).remove()
+    
+    def async_kill_container(client, container):
+        thread = threading.Thread(target=stop_and_remove_container, args=(client, container.id))
+        thread.daemon = True
+        thread.start()
+        
+    
+    def safe_run(client, container, files, run_cmd):
+        tarfile = make_tar(files)
+    
+        path = "/usr/src/app"
+        container.put_archive(path, tarfile)
+    
+        exit_code, output = container.exec_run(run_cmd)
+        
+        return output
+else:
+    def setup_docker(env):
+        # Starting a container with Podman
+        result = subprocess.run(["podman", "run", "-d", "-t", "llm-benchmark-image"], capture_output=True, text=True, check=True)
+        env.container = result.stdout.strip()
+        env.docker = "I AM USING PODMAN THIS IS NOT NEEDED"
+    
+    def stop_and_remove_podman_container(container_id):
+        # Stopping the container
+        subprocess.run(["podman", "container", "stop", container_id], check=True)
+    
+        # Removing the container
+        subprocess.run(["podman", "container", "rm", container_id], check=True)
+    
+    def async_kill_container(client, container_id):
+        thread = threading.Thread(target=stop_and_remove_podman_container, args=(container_id,))
+        thread.daemon = True
+        thread.start()
+    
+    def safe_run(client, container_id, files, run_cmd):
+        tarfile = make_tar(files)
+
+        # Create a temporary directory in the container to store files
+        subprocess.run(["podman", "exec", container_id, "mkdir", "-p", "/usr/src/app"], check=True)
+    
+        # Copying files to the container
+        with open('archive.tar', 'wb') as out_f:
+            out_f.write(tarfile.getbuffer())
+        time.sleep(.2)
+        subprocess.run(["podman", "cp", "archive.tar", f"{container_id}:/usr/src/app"], check=True)
+
+        result = subprocess.run(["podman", "exec", container_id, "tar", "-xf", "archive.tar"], capture_output=True, check=True)
+        
+        # Executing command in the container
+        result = subprocess.run(["podman", "exec", container_id, *run_cmd], capture_output=True)
+    
+        return result.stdout + result.stderr
+
+import fcntl
+
+def is_fd_closed(fd):
+    try:
+        fcntl.fcntl(fd, fcntl.F_GETFD)
+        return False
+    except OSError:
+        return True
 
 
 class DockerJob:
     def __init__(self, container_id, eos_string):
         self.eos_string = eos_string
-        # Create a pseudo-terminal
-        master, slave = pty.openpty()
 
+        if BACKEND == "docker":
+            cmd = f"docker exec -it {container_id} /bin/bash"
+        else:
+            cmd = f"podman exec -it {container_id} /bin/bash"
         
-        # Set the window size
-        winsize = struct.pack("HHHH", 100, 160, 0, 0)
-        fcntl.ioctl(slave, termios.TIOCSWINSZ, winsize)
-
-
-        # Start the Docker subprocess with the pseudo-terminal
-        self.process = subprocess.Popen(f"docker exec -it {container_id} /bin/bash",
+        self.process = subprocess.Popen(cmd,
                                         shell=True,
-                                        stdin=slave,
-                                        stdout=slave,
+                                        stdin=subprocess.PIPE,
+                                        stdout=subprocess.PIPE,
                                         stderr=subprocess.PIPE,
                                         text=True)
-
-        # Close the slave FD as it is no longer needed
-        os.close(slave)
-        self.master_fd = master
+        
+        self.master_fd = self.process.stdout.fileno()  # If you need a file descriptor for reading output
         
     @staticmethod
     def remove_ansi(text):
@@ -116,16 +158,19 @@ class DockerJob:
 
     def __call__(self, cmd):
         # Send the command through the PTY
-        os.write(self.master_fd, (cmd + "\n").encode())
+        self.process.stdin.write((cmd + "\n"))
+        self.process.stdin.flush()
 
         # Read the output until the EOS string is encountered
         output = []
         while True:
             ready, _, _ = select.select([self.master_fd], [], [], 2)  # 2-second timeout
             if ready:
-                line = os.read(self.master_fd, 1024).decode()
+                line = os.read(self.master_fd, 1).decode()
                 output.append(line)
                 if self.eos_string in line:
+                    break
+                if line == '':
                     break
             else:
                 # Timeout occurred

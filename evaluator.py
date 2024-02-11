@@ -497,7 +497,7 @@ class TerminalRun(Node):
 
     def __call__(self, code):
         if code:
-            out = invoke_docker(self.env, {}, ["bash", '-c', code])
+            out = invoke_docker(self.env, {"main.sh": code.encode()}, ["bash", "main.sh"])
         else:
             out = ""
         yield out, Reason(type(self), (code, out))
@@ -581,7 +581,7 @@ class StartDockerJob(Node):
         self.eos_string = eos_string
 
     def __call__(self, text):
-        self.env.docker_job = DockerJob(self.env.container.id, self.eos_string)
+        self.env.docker_job = DockerJob(self.env.container.id if 'id' in self.env.container else self.env.container, self.eos_string)
         out = self.env.docker_job(self.command)
 
         yield out, Reason(type(self), (text, out))
@@ -677,6 +677,7 @@ class SeleniumDraw(Node):
             
             
             yield img_data, Reason(type(self), img_data)
+    
         except:
             yield b"", Reason(type(self), b"")
         
@@ -718,7 +719,6 @@ class JSONSubsetEvaluator(Node):
         try:
             output = json.loads(output)
         except:
-            print("AAA", output)
             yield False, Reason(type(self), [self.goal, False])
             return
 

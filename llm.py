@@ -88,8 +88,8 @@ class LLM:
 
 #llm = LLM("command")
 #llm = LLM("gpt-3.5-turbo")
-llm = LLM("gpt-4-1106-preview")
-#llm = LLM("claude-2.1")
+#llm = LLM("gpt-4-1106-preview")
+llm = LLM("claude-instant-1.2")
 #llm = LLM("mistral-tiny")
 #llm = LLM("gemini-pro", override_hparams={'temperature': 1.0}, use_cache=False)
 

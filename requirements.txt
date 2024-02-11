@@ -4,3 +4,4 @@ Pillow
 openai
 markdown
 pygments
+selenium

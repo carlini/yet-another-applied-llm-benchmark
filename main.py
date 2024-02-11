@@ -87,7 +87,6 @@ def run_all_tests(test_llm, use_cache=True, which_tests=None):
                 else:
                     print("Test Fails:", t, 'from', f)
                 sr[f+"."+t] = (ok, reason)
-    print(sr)
     return sr
 
 
@@ -99,7 +98,7 @@ def get_tags():
     descriptions = {}
     tags = {}
     for f in os.listdir("tests"):
-        if not f.endswith(".py") or 'basic' not in f: continue
+        if not f.endswith(".py"): continue
         try:
             spec = importlib.util.spec_from_file_location(f[:-3], "tests/" + f)
             module = importlib.util.module_from_spec(spec)
@@ -165,7 +164,7 @@ def main():
     if args.model:
         models_to_run = args.model
     elif args.all_models:
-        models_to_run = ["gpt-4-0125-preview", "claude-instant-1.2", "gpt-3.5-turbo-0125", "gemini-pro", "mistral-small", "mistral-medium", "command"]
+        models_to_run = ["gpt-4-0125-preview", "claude-2.1", "claude-1.3" "claude-instant-1.2", "gpt-3.5-turbo-0125", "gemini-pro", "mistral-small", "mistral-medium", "command"]
 
     data = {}
     for model in models_to_run:
@@ -175,7 +174,7 @@ def main():
             data[model] = {}
             for i in range(args.times):
                 print(f"Running {model}, iteration {i+args.runid}")
-                result = run_all_tests(model, use_cache=False,
+                result = run_all_tests(model, use_cache=True,
                                        which_tests=args.test)
 
                 for k,(v1,v2) in result.items():
