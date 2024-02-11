@@ -120,6 +120,8 @@ def generate_report(data, tags, descriptions):
     #all_tests = sorted({key for inner_dict in data.values() for key in inner_dict.keys()})
     all_tests = [inner_dict.keys() for inner_dict in data.values()]
 
+    print(all_tests)
+    
     # keep only the tests that are in all models
     all_tests = set.intersection(*map(set, all_tests))
     all_tests = sorted(all_tests)

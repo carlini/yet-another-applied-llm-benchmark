@@ -29,6 +29,7 @@ import re
 import termios
 import struct
 import fcntl
+import random
 
 
 # DO NOT SET THIS FLAG TO TRUE UNLESS YOU ARE SURE YOU UNDERSTAND THE CONSEQUENCES
@@ -111,12 +112,16 @@ else:
         subprocess.run(["podman", "exec", container_id, "mkdir", "-p", "/usr/src/app"], check=True)
     
         # Copying files to the container
-        with open('archive.tar', 'wb') as out_f:
+        r = random.randint(0, 1000000)
+        with open('/tmp/archive%d.tar'%r, 'wb') as out_f:
             out_f.write(tarfile.getbuffer())
-        time.sleep(.2)
-        subprocess.run(["podman", "cp", "archive.tar", f"{container_id}:/usr/src/app"], check=True)
+        time.sleep(.1)
+        subprocess.run(["podman", "cp", "/tmp/archive%d.tar"%r, f"{container_id}:/usr/src/app"], check=True)
+        time.sleep(.1)
 
-        result = subprocess.run(["podman", "exec", container_id, "tar", "-xf", "archive.tar"], capture_output=True, check=True)
+        result = subprocess.run(["podman", "exec", container_id, "tar", "-xf", "archive%d.tar"%r], capture_output=True, check=True)
+
+        time.sleep(.3)
         
         # Executing command in the container
         result = subprocess.run(["podman", "exec", container_id, *run_cmd], capture_output=True)

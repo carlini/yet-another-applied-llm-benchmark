@@ -19,4 +19,4 @@ TestEasyFlagDrawBMP = question2 >> LLMRun() >> ExtractCode(keep_main=True) >> CR
 
 
 if __name__ == "__main__":
-    print(run_test(TestEasyFlagDrawBMP))
+    print(run_test(TestFlagDrawBMP))

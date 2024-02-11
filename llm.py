@@ -19,6 +19,7 @@ import base64
 import requests
 import json
 import pickle
+import time
 
 from llms.openai_model import OpenAIModel
 from llms.anthropic_model import AnthropicModel
@@ -76,7 +77,9 @@ class LLM:
         for _ in range(3):
             try:
                 response = self.model.make_request(conversation, add_image=add_image, max_tokens=max_tokens)
-            except:
+            except Exception as e:
+                print("RUN FAILED", e)
+                time.sleep(10)
                 pass
         
 
@@ -89,12 +92,12 @@ class LLM:
 #llm = LLM("command")
 #llm = LLM("gpt-3.5-turbo")
 #llm = LLM("gpt-4-1106-preview")
-llm = LLM("claude-instant-1.2")
+#llm = LLM("claude-instant-1.2")
 #llm = LLM("mistral-tiny")
-#llm = LLM("gemini-pro", override_hparams={'temperature': 1.0}, use_cache=False)
+llm = LLM("gemini-pro", override_hparams={'temperature': 0.3}, use_cache=False)
 
 #eval_llm = LLM("gpt-4-1106-preview")
-eval_llm = LLM("gpt-4-0125-preview", override_hparams={'temperature': 0.1})
-#eval_llm = LLM("gpt-3.5-turbo", override_hparams={'temperature': 0.1})
+#eval_llm = LLM("gpt-4-0125-preview", override_hparams={'temperature': 0.1})
+eval_llm = LLM("gpt-3.5-turbo", override_hparams={'temperature': 0.1})
 
 vision_eval_llm = LLM("gpt-4-vision-preview", override_hparams={'temperature': 0.1})

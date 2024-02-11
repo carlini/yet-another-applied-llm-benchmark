@@ -164,7 +164,7 @@ def main():
     if args.model:
         models_to_run = args.model
     elif args.all_models:
-        models_to_run = ["gpt-4-0125-preview", "claude-2.1", "claude-1.3" "claude-instant-1.2", "gpt-3.5-turbo-0125", "gemini-pro", "mistral-small", "mistral-medium", "command"]
+        models_to_run = ["gpt-4-0125-preview", "claude-2.1", "claude-1.3", "claude-instant-1.2", "gpt-3.5-turbo-0125","gemini-pro", "mistral-small", "command"] #"mistral-medium", 
 
     data = {}
     for model in models_to_run:

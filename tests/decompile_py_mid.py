@@ -83,7 +83,7 @@ Disassemble the following python into a function called foo:
 test_case, answer = make_python_test([("foo(20)", "[2, 3, -3, 5, -5, 7, -7, 11, -11, 13, -13, 17, -17, 19, -19]")])
 
 
-TestDisas1 = question >> LLMRun() >> ExtractCode(keep_main=False) >> PythonRun(test_case) >> SubstringEvaluator(answer)
+TestDisasPrimes = question >> LLMRun() >> ExtractCode(keep_main=False) >> PythonRun(test_case) >> SubstringEvaluator(answer)
 
 if __name__ == "__main__":
-    print(run_test(TestDisas1))
+    print(run_test(TestDisasPrimes))
