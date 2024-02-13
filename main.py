@@ -164,7 +164,7 @@ def main():
     if args.model:
         models_to_run = args.model
     elif args.all_models:
-        models_to_run = ["gpt-4-0125-preview", "claude-2.1", "claude-1.3", "claude-instant-1.2", "gpt-3.5-turbo-0125","gemini-pro", "mistral-small", "command"] #"mistral-medium", 
+        models_to_run = ["gpt-4-0125-preview", "claude-2.1", "claude-instant-1.2", "gpt-3.5-turbo-0125","gemini-pro", "mistral-medium", "mistral-small"]
 
     data = {}
     for model in models_to_run:
@@ -174,7 +174,7 @@ def main():
             data[model] = {}
             for i in range(args.times):
                 print(f"Running {model}, iteration {i+args.runid}")
-                result = run_all_tests(model, use_cache=True,
+                result = run_all_tests(model, use_cache=False,
                                        which_tests=args.test)
 
                 for k,(v1,v2) in result.items():
