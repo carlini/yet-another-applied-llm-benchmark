@@ -581,7 +581,7 @@ class StartDockerJob(Node):
         self.eos_string = eos_string
 
     def __call__(self, text):
-        self.env.docker_job = DockerJob(self.env.container.id if 'id' in self.env.container else self.env.container, self.eos_string)
+        self.env.docker_job = DockerJob(self.env.container.id if 'id' in dir(self.env.container) else self.env.container, self.eos_string)
         out = self.env.docker_job(self.command)
 
         yield out, Reason(type(self), (text, out))
@@ -640,7 +640,8 @@ class SeleniumDraw(Node):
         pass
 
     def __call__(self, code):
-        try:
+        #try:
+        if 1:
             from selenium import webdriver
             from selenium.webdriver.chrome.options import Options
             
@@ -677,6 +678,9 @@ class SeleniumDraw(Node):
             
             
             yield img_data, Reason(type(self), img_data)
+
+        try:
+            pass
     
         except:
             yield b"", Reason(type(self), b"")

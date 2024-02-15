@@ -9,7 +9,6 @@ Generate an HTML file that uses flexbox to create a webpage with a header 200px 
 """
 
 def check(x):
-    print(type(x))
     import io
     from PIL import Image
     import numpy as np
@@ -20,7 +19,6 @@ def check(x):
         np_img = np_img[1:]
     while np.mean(np_img[:, 0]) >= 254:
         np_img = np_img[:, 1:]
-    Image.fromarray(np_img).save("/tmp/a.png")
 
     if np_img[0:200].std((0,1)).mean() > 20:
         return False

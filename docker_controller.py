@@ -30,6 +30,7 @@ import termios
 import struct
 import fcntl
 import random
+import json
 
 
 # DO NOT SET THIS FLAG TO TRUE UNLESS YOU ARE SURE YOU UNDERSTAND THE CONSEQUENCES
@@ -37,10 +38,7 @@ import random
 # A LANGUAGE MODEL DIRECTLY ON YOUR COMPUTER WITH NO SAFETY CHECKS.
 I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE_OR_MAKING_THEM_HALT_AND_CATCH_FIRE = False
 
-BACKEND = "PODMAN"
-
-if not I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE_OR_MAKING_THEM_HALT_AND_CATCH_FIRE:
-    import docker
+BACKEND = json.load(open("config.json"))['container']
 
 def make_tar(files):
     file_like_object = io.BytesIO()
@@ -59,7 +57,8 @@ def make_tar(files):
     return file_like_object
     
 
-if BACKEND == "DOCKER":
+if BACKEND == "docker":
+    import docker
     def setup_docker(env):
         env.docker = docker.from_env()
         env.container = env.docker.containers.run("llm-benchmark-image", detach=True, tty=True)    
@@ -86,7 +85,7 @@ if BACKEND == "DOCKER":
         exit_code, output = container.exec_run(run_cmd)
         
         return output
-else:
+elif BACKEND == "podman":
     def setup_docker(env):
         # Starting a container with Podman
         result = subprocess.run(["podman", "run", "-d", "-t", "llm-benchmark-image"], capture_output=True, text=True, check=True)
@@ -127,6 +126,8 @@ else:
         result = subprocess.run(["podman", "exec", container_id, *run_cmd], capture_output=True)
     
         return result.stdout + result.stderr
+else:
+    raise ValueError("Invalid backend")
 
 import fcntl
 
@@ -144,6 +145,7 @@ class DockerJob:
 
         if BACKEND == "docker":
             cmd = f"docker exec -it {container_id} /bin/bash"
+            print("Running", cmd)
         else:
             cmd = f"podman exec -it {container_id} /bin/bash"
         
@@ -164,6 +166,7 @@ class DockerJob:
     def __call__(self, cmd):
         # Send the command through the PTY
         self.process.stdin.write((cmd + "\n"))
+        print("GO", self.process.stdin)
         self.process.stdin.flush()
 
         # Read the output until the EOS string is encountered
@@ -171,7 +174,7 @@ class DockerJob:
         while True:
             ready, _, _ = select.select([self.master_fd], [], [], 2)  # 2-second timeout
             if ready:
-                line = os.read(self.master_fd, 1).decode()
+                line = os.read(self.master_fd, 128).decode()
                 output.append(line)
                 if self.eos_string in line:
                     break

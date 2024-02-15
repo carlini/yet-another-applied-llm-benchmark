@@ -140,8 +140,10 @@ def load_saved_runs(output_dir, model):
 def main():
     parser = argparse.ArgumentParser(description="Run tests on language models.")
     parser.add_argument('--model', help='Specify a specific model to run.', type=str, action="append")
-    parser.add_argument('--test', help='Specify a specific test to run.', type=str, action="append")
     parser.add_argument('--all-models', help='Run all models.', action='store_true')
+    
+    parser.add_argument('--test', help='Specify a specific test to run.', type=str, action="append")
+    
     parser.add_argument('--times', help='Number of times to run the model(s).', type=int, default=1)
     parser.add_argument('--runid', help='Offset of the run ID for saving.', type=int, default=0)
     parser.add_argument('--logdir', help='Output path for the results.', type=str, default='results')
@@ -189,8 +191,6 @@ def main():
     if args.generate_report:
         tags, descriptions = get_tags()  # Assuming these functions are defined in your codebase
         create_results_html.generate_report(data, tags, descriptions)
-
-    print("Operation Completed")
 
 if __name__ == "__main__":
     main()
