@@ -147,7 +147,7 @@ def generate_report(data, tags, descriptions):
     # Weight tests and models according to how easy/good they are
     # It's less impressive if a model can solve an easy test, and so it gets fewer points.
     # Similarly, a test probably isn't very hard if even bad models can solve it.
-    for _ in range(20):
+    for _ in range(1):
         row_means = (score_table * (row_weight_vec[:,None] + .1)).mean(0)
         column_means = (score_table / (col_weight_vec[None,:] + .1)).mean(1)
 
