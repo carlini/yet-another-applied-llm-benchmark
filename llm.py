@@ -77,6 +77,7 @@ class LLM:
         for _ in range(3):
             try:
                 response = self.model.make_request(conversation, add_image=add_image, max_tokens=max_tokens)
+                break
             except Exception as e:
                 print("RUN FAILED", e)
                 time.sleep(10)
