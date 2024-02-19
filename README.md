@@ -219,10 +219,13 @@ Once you've set up your environment, you can run the entire benchmark in just on
 python main.py --model gpt-3.5-turbo --run-tests --generate-report
 ```
 
-This command will run every single test on every model that's configured.
+This command will run every single test that's configured on one model.
 It will therefore take some time, and also will cost you a few dollars in
 language model queries. After you can view the full reslt html file in the
 directory `evaluation_examples`.
+
+It will also save a cache of this run, so that the next time you can run
+a new model and view the two results side-by-side.
 
 If you want to run individual test cases, you can do that too in two ways.
 One is to just directly run test
@@ -231,8 +234,11 @@ One is to just directly run test
 PYTHONPATH='.' python tests/print_hello.py
 ```
 
+
 The other, if you want to save the result of this run so you can load it later,
 is to run the main script and specify which test(s) you want to run.
+(Be careful if you do this, though, beacuse it will overwrite any prior run.)
+
 
 ```bash
 python main.py --test print_hello --run-tests --model gpt-3.5-turbo-0125
