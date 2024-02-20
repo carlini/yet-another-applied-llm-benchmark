@@ -32,8 +32,8 @@ class LLM:
         self.name = name
         if 'gpt' in name:
             self.model = OpenAIModel(name)
-        elif 'llama' in name:
-            self.model = LLAMAModel(name)
+        # elif 'llama' in name:
+        #     self.model = LLAMAModel(name)
         elif 'mistral' in name:
             self.model = MistralModel(name)
         elif 'gemini' in name or 'bison' in name:

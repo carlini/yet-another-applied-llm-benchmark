@@ -234,6 +234,8 @@ One is to just directly run test
 PYTHONPATH='.' python tests/print_hello.py
 ```
 
+Note: Ensure that in `evaluator.py`, the Python version aligns with the version you are currently using.
+`out = invoke_docker(self.env, {"main.py": code.encode()}, ["python3.11", "main.py"], out_bytes=self.out_bytes)`
 
 The other, if you want to save the result of this run so you can load it later,
 is to run the main script and specify which test(s) you want to run.
