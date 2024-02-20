@@ -388,7 +388,7 @@ class ExtractJSON(Node):
             for maybe in self.try_extract(orig_output):
                 yield maybe, Reason(type(self), [maybe])
         else:
-            output = self.llm("Take the below answer to my question asking for a JSON output and just return the JSON obcject directly, with no other description, so I can copy it into an editor directly:\n" + orig_output)
+            output = self.llm("Take the below answer to my question asking for a JSON output and just return the JSON object directly, with no other description, so I can copy it into an editor directly:\n" + orig_output)
             for maybe in self.try_extract(output):
                 yield maybe, Reason(type(self), [maybe])
 
