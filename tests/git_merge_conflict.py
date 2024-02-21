@@ -45,12 +45,12 @@ def setup():
     git checkout other
     echo "x + y" > sum.py
     git add sum.py
-    git commit -a -m "subtraction"
+    git commit -a -m "addition"
     git log
     git checkout main
     echo "x - y" > sum.py
     git add sum.py
-    git commit -a -m "addition"
+    git commit -a -m "subtraction"
     git log
     """).read())
 
