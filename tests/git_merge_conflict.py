@@ -23,7 +23,7 @@ Now your turn. What do you want to run? Do not explain yourself, just give me ex
 def test_merge_conflict_resolved():
     import os
     try:
-        return open("a").read().strip() == "x + y" and open("b").read().strip() == "b"
+        return open("sum.py").read().strip() == "x + y" and open("b").read().strip() == "b"
     except:
         return False
 
@@ -43,12 +43,12 @@ def setup():
     git commit -a -m "Initial commit"
     git branch other
     git checkout other
-    echo "x - y" > sum.py
+    echo "x + y" > sum.py
     git add sum.py
     git commit -a -m "subtraction"
     git log
     git checkout main
-    echo "x + y" > sum.py
+    echo "x - y" > sum.py
     git add sum.py
     git commit -a -m "addition"
     git log
