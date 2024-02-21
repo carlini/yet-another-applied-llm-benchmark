@@ -18,6 +18,9 @@
         },
         "anthropic": {
             "api_key": "TODO"
-        }
+        },
+        "moonshot": {
+            "api_key": "TODO"
+        }        
     }
 }
