@@ -1,7 +1,7 @@
 {
     "container": "podman",
     "hparams": {
-        "temperature": 0.7,
+        "temperature": 0.7
     },
     "llms": {
         "vertexai": {

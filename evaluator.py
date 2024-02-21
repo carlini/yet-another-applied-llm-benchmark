@@ -36,6 +36,7 @@ from docker_controller import invoke_docker, DockerJob
 LLM = "llm"                         # The LLM under evaluation
 EVAL_LLM = "eval_llm"               # A good LLM that can act as a judge
 VISION_EVAL_LLM = "vision_eval_llm" # And a good judge for vision tasks
+PYTHON_ENV = "python3.11"            # The version of python to use
 
 class Env:
     """
@@ -265,7 +266,7 @@ class Setup(Node):
         to_invoke = self.runner.__name__
 
         code = code + f"\n\n{to_invoke}()"
-        out = invoke_docker(self.env, {"setup.py": code.encode()}, ["python3.11", "setup.py"])
+        out = invoke_docker(self.env, {"setup.py": code.encode()}, [PYTHON_ENV, "setup.py"])
 
         return [(out, Reason(type(self), None))]
 
@@ -283,7 +284,7 @@ class PyEvaluator(Node):
         to_invoke = self.runner.__name__
 
         code = code + f"\n\nprint('final: ' + str({to_invoke}()))"
-        out = invoke_docker(self.env, {"check.py": code.encode()}, ["python3.11", "check.py"])
+        out = invoke_docker(self.env, {"check.py": code.encode()}, [PYTHON_ENV, "check.py"])
 
         return [("final: True" in out, Reason(type(self), [out, "final: True" in out]))]
     
@@ -460,7 +461,7 @@ class PythonRun(Node):
     def __call__(self, code):
         code = code + "\n\n" + self.test_case
 
-        out = invoke_docker(self.env, {"main.py": code.encode()}, ["python3.11", "main.py"], out_bytes=self.out_bytes)
+        out = invoke_docker(self.env, {"main.py": code.encode()}, [PYTHON_ENV, "main.py"], out_bytes=self.out_bytes)
         yield out, Reason(type(self), (code, out))
 
 class SQLRun(Node):
@@ -708,7 +709,7 @@ class JSONSubsetEvaluator(Node):
             # Check each element in the goal list
             for item in goal:
                 if item not in output:
-                    return False, Reaon(self, ["Item not present", item])
+                    return False, Reason(self, ["Item not present", item])
         else:
             # Not a dict or list, so check if the values are equal
             if goal == output:

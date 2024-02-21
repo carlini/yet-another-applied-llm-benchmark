@@ -233,7 +233,7 @@ One is to just directly run test
 ```bash
 PYTHONPATH='.' python tests/print_hello.py
 ```
-
+* Explore the `run_a_simple_testcase.ipynb` notebook to quickly run a sample test case on Colab. 
 
 The other, if you want to save the result of this run so you can load it later,
 is to run the main script and specify which test(s) you want to run.
