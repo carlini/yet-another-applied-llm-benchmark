@@ -336,6 +336,20 @@ is not wrong. For example, one test asks
 and expects the model to tell me that I should be using the class "AutoModelForCausalLM";
 even though the class "AutoModelWithLMHead" exists, that's not what I was looking for.
 
+# I want to cite this in an academic paper
+
+No you probably don't. At least, you probably don't if you're trying to compare
+why your new model is better or something.
+This is not meant to be something for academic papers.
+But I've now had at least a few people ask me about this who appear unswayed by the
+above argument.
+
+So here's my answer: if you want to user this in a paper,
+then link to this github project AND INCLUDE THE GIT COMMIT HASH YOU USED.
+I make NO GUARANTEES that I won't just arbitrarily edit test cases without
+warning. In fact, it's already happened in #1! And #3! So if you want your paper
+to be at all scientific make sure to include the git commit hash.
+
 
 # License
 
