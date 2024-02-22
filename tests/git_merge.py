@@ -20,7 +20,7 @@ OUTPUT: `main.py a b`
 Now your turn. What do you want to run? Do not explain yourself, just give me exactly one command. Start your response with INPUT:"""
 
 
-def test_ok():
+def test_ok_merge():
     try:
         math_content = open("math.py").read().strip()
         readme_content = open("README.md").read().strip()
@@ -37,7 +37,17 @@ def test_ok():
     return success
 
 
-def setup():
+def test_merge_conflict_resolved():
+    import os
+    try:
+        return open("sum.py").read().strip() == "x + y" and open("b").read().strip() == "b"
+    except:
+        return False
+
+    return success
+
+
+def setup_merge():
     import os
     print(os.popen("""
     git config --global user.name "Your Name"
@@ -65,6 +75,31 @@ def setup():
     """).read())
 
 
+def setup_merge_conflict():
+    import os
+    print(os.popen("""
+    git config --global user.name "Your Name"
+    git config --global user.email "you@example.com"
+    git config --global init.defaultBranch main
+    echo "a" > sum.py
+    echo "b" > b
+    git init
+    git add sum.py b
+    git commit -a -m "Initial commit"
+    git branch other
+    git checkout other
+    echo "x + y" > sum.py
+    git add sum.py
+    git commit -a -m "addition"
+    git log
+    git checkout main
+    echo "x - y" > sum.py
+    git add sum.py
+    git commit -a -m "subtraction"
+    git log
+    """).read())
+
+
 def do_extract(x):
     if 'INPUT:' in x:
         x = x.split("INPUT:")[1]
@@ -80,8 +115,12 @@ def do_prepare(x):
     return f"I get an OUTPUT: `{x}`.\n\nWhat is the exact command I should run next? Start your response with INPUT:"
 
 
-TestGitMerge = Setup(setup) >> Echo() >> question >> UntilDone(PyEvaluator(test_ok), (LLMConversation(
-) >> PyFunc(do_extract) >> TerminalRun() >> PyFunc(do_prepare)), max_iters=6) >> PyEvaluator(test_ok)
+TestGitMerge = Setup(setup_merge) >> Echo() >> question >> UntilDone(PyEvaluator(test_ok_merge), (LLMConversation(
+) >> PyFunc(do_extract) >> TerminalRun() >> PyFunc(do_prepare)), max_iters=6) >> PyEvaluator(test_ok_merge)
+
+TestGitMergeConflict = Setup(setup_merge_conflict) >> Echo() >> question >> UntilDone(PyEvaluator(test_merge_conflict_resolved), (LLMConversation(
+) >> PyFunc(do_extract) >> TerminalRun() >> PyFunc(do_prepare)), max_iters=10) >> PyEvaluator(test_merge_conflict_resolved)
 
 if __name__ == "__main__":
     print(run_test(TestGitMerge))
+    print(run_test(TestGitMergeConflict))
