@@ -34,8 +34,6 @@ def test_ok_merge():
     except:
         return False
 
-    return success
-
 
 def test_merge_conflict_resolved():
     import os
