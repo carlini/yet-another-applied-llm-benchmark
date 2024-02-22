@@ -21,9 +21,16 @@ Now your turn. What do you want to run? Do not explain yourself, just give me ex
 
 
 def test_ok():
-    import os
     try:
-        return open("e").read().strip() == "e" and open("c").read().strip() == "c" and open("d").read().strip() == "d"
+        math_content = open("math.py").read().strip()
+        readme_content = open("README.md").read().strip()
+        mul_content = open("mul.py").read().strip()
+
+        return (
+            math_content == "x + y\nx - y"
+            and readme_content == "A repo about something\nYou run it like this"
+            and mul_content == "x * y"
+        )
     except:
         return False
 
@@ -36,24 +43,24 @@ def setup():
     git config --global user.name "Your Name"
     git config --global user.email "you@example.com"
     git config --global init.defaultBranch main
-    echo "a" > a
-    echo "b" > b
+    echo "x + y" > math.py
+    echo "A repo about something" > README.md
     git init
-    git add a b
+    git add math.py README.md
     git commit -a -m "Initial commit"
     git branch other
     git checkout other
-    echo "c" > c
-    git add c
-    git commit -a -m "Add c"
-    echo "d" > d
-    git add d
-    git commit -a -m "Add d"
+    echo "x + y\nx - y" > math.py
+    git add math.py
+    git commit -a -m "Subtraction"
+    echo "A repo about something\nYou run it like this" > README.md
+    git add README.md
+    git commit -a -m "README"
     git log
     git checkout main
-    echo "e" > e
-    git add e
-    git commit -a -m "Add e"
+    echo "x * y" > mul.py
+    git add mul.py
+    git commit -a -m "Multiplication"
     git log
     """).read())
 
