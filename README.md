@@ -340,14 +340,19 @@ even though the class "AutoModelWithLMHead" exists, that's not what I was lookin
 
 No you probably don't. At least, you probably don't if you're trying to compare
 why your new model is better or something.
-This is not meant to be something for academic papers.
+This is not meant to be something for academic papers and only evaluates
+a very specific set of capabilities.
+For all the reasons mentioned earlier I don't think this benchmark
+will accurately capture what academic people should care about for their models.
+Good for "useful for me?": yes. Good for "is my model better?": I don't think so.
 But I've now had at least a few people ask me about this who appear unswayed by the
 above argument.
 
 So here's my answer: if you want to user this in a paper,
 then link to this github project AND INCLUDE THE GIT COMMIT HASH YOU USED.
 I make NO GUARANTEES that I won't just arbitrarily edit test cases without
-warning. In fact, it's already happened in #1! And #3! So if you want your paper
+warning. In fact, it's already happened in #1! And #3! And #6.
+So if you want your paper
 to be at all scientific make sure to include the git commit hash.
 
 
