@@ -13,9 +13,13 @@ security_group.authorize_egress(
         )
 """
 
-answer = 'Ipv6Ranges'
+evaluation = """
+Below is a software engineer's answer to a request to find an issue with the following code: <A>
 
-TestAWSV6 = question >> LLMRun() >>  Echo()  >> SubstringEvaluator(answer)
+Does the engineer mention overly permissive IPv6 ranges? Think out loud, and then end your answer with either the string "The issue is found" or "The issue is not found".
+"""
+
+TestAWSV6 = question >> LLMRun() >> LLMRun(evaluation, llm=EVAL_LLM) >> SubstringEvaluator("The issue is found")
 
 if __name__ == "__main__":
     print(run_test(TestAWSV6))
