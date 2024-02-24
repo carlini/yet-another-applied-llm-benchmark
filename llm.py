@@ -26,6 +26,7 @@ from llms.anthropic_model import AnthropicModel
 from llms.mistral_model import MistralModel
 from llms.vertexai_model import VertexAIModel
 from llms.cohere_model import CohereModel
+from llms.moonshot_model import MoonshotAIModel
 
 class LLM:
     def __init__(self, name="gpt-3.5-turbo", use_cache=True, override_hparams={}):
@@ -40,6 +41,8 @@ class LLM:
             self.model = VertexAIModel(name)
         elif 'claude' in name:
             self.model = AnthropicModel(name)
+        elif 'moonshot' in name:
+            self.model = MoonshotAIModel(name)            
         elif 'command' in name:
             self.model = CohereModel(name)
         else:
