@@ -505,7 +505,7 @@ class TerminalRun(Node):
 
 class RustRun(Node):
     """
-    A node that runs the output from the prior command as a python function.
+    A node that compiles and runs the output Rust code from the prior command.
 
     Optionally append a set of test cases to the code that's been provided.
     """
