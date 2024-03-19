@@ -640,8 +640,8 @@ class SeleniumDraw(Node):
         pass
 
     def __call__(self, code):
-        #try:
-        if 1:
+        try:
+        #if 1:
             from selenium import webdriver
             from selenium.webdriver.chrome.options import Options
             
@@ -679,7 +679,7 @@ class SeleniumDraw(Node):
             
             yield img_data, Reason(type(self), img_data)
 
-        try:
+        #try:
             pass
     
         except:
