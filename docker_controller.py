@@ -165,9 +165,13 @@ class DockerJob:
 
     def __call__(self, cmd):
         # Send the command through the PTY
-        self.process.stdin.write((cmd + "\n"))
         print("GO", self.process.stdin)
-        self.process.stdin.flush()
+        try:
+            self.process.stdin.write((cmd + "\n"))
+            self.process.stdin.flush()
+        except:
+            print("Process was terminated")
+            return "Process was terminated"
 
         # Read the output until the EOS string is encountered
         output = []
