@@ -27,6 +27,7 @@ from llms.mistral_model import MistralModel
 from llms.vertexai_model import VertexAIModel
 from llms.cohere_model import CohereModel
 from llms.moonshot_model import MoonshotAIModel
+from llms.gemma_model import GemmaModel
 
 class LLM:
     def __init__(self, name="gpt-3.5-turbo", use_cache=True, override_hparams={}):
@@ -45,6 +46,8 @@ class LLM:
             self.model = MoonshotAIModel(name)            
         elif 'command' in name:
             self.model = CohereModel(name)
+        elif 'gemma' in name:
+            self.model = GemmaModel(name)
         else:
             raise
         self.model.hparams.update(override_hparams)
@@ -95,12 +98,14 @@ class LLM:
 
 #llm = LLM("command")
 #llm = LLM("gpt-3.5-turbo")
+# llm = LLM("gemma:2b-it")
 llm = LLM("gpt-4-1106-preview")
 #llm = LLM("claude-instant-1.2")
 #llm = LLM("mistral-tiny")
 #llm = LLM("gemini-pro", override_hparams={'temperature': 0.3}, use_cache=False)
 
 #eval_llm = LLM("gpt-4-1106-preview")
+# eval_llm = LLM("gemma:2b-it")
 eval_llm = LLM("gpt-4-0125-preview", override_hparams={'temperature': 0.1})
 #eval_llm = LLM("gpt-3.5-turbo", override_hparams={'temperature': 0.1})
 

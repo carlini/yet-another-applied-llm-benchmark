@@ -1,5 +1,8 @@
 # Yet Another Applied LLM Benchmark
 
+Run a simple test case  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/carlini/yet-another-applied-llm-benchmark/blob/master/run_a_simple_testcase.ipynb)
+
+      
 This is a benchmark I made, for me, to test how well language models perform
 on tasks I care about. I know I care about them because each test is directly
 derived from something I've asked a LLM to perform for me in the last year.
