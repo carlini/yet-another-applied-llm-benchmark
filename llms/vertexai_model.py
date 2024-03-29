@@ -13,8 +13,6 @@ class VertexAIModel:
         self.hparams = config['hparams']
         self.hparams.update(config['llms']['vertexai'].get('hparams') or {})
 
-        self.name = name
-
         project_id = config['llms']['vertexai']['project_id'].strip()
         vertexai.init(project=project_id, location="us-central1")
 
