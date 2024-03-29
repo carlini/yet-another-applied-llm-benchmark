@@ -9,7 +9,7 @@ class AnthropicModel:
         self.api_key = config['llms']['anthropic']['api_key'].strip()
 
         self.hparams = config['hparams']
-        self.hparams.update(config['llms']['openai'].get('hparams') or {})
+        self.hparams.update(config['llms']['anthropic'].get('hparams') or {})
         
     def make_request(self, conversation, add_image=None, logit_bias=None, max_tokens=None):
         conversation = [{"role": "user" if i%2 == 0 else "assistant", "content": content} for i,content in enumerate(conversation)]

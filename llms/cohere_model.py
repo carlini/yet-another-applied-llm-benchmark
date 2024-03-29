@@ -11,9 +11,8 @@ class CohereModel:
         api_key = config['llms']['cohere']['api_key'].strip()
         self.client = cohere.Client(api_key)
         self.name = name
-        config = json.load(open("config.json"))
         self.hparams = config['hparams']
-        self.hparams.update(config['llms']['openai'].get('hparams') or {})
+        self.hparams.update(config['llms']['cohere'].get('hparams') or {})
 
     def make_request(self, conversation, add_image=None, max_tokens=None):
         prior_messages = [{"role": "USER" if i%2 == 0 else "CHATBOT", "message": content} for i,content in enumerate(conversation[:-1])]

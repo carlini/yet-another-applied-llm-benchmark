@@ -11,7 +11,6 @@ class OpenAIModel:
         api_key = config['llms']['openai']['api_key'].strip()
         self.client = OpenAI(api_key=api_key)
         self.name = name
-        config = json.load(open("config.json"))
         self.hparams = config['hparams']
         self.hparams.update(config['llms']['openai'].get('hparams') or {})
 

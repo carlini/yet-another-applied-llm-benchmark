@@ -11,7 +11,7 @@ class VertexAIModel:
         self.name = name
         config = json.load(open("config.json"))
         self.hparams = config['hparams']
-        self.hparams.update(config['llms']['mistral'].get('hparams') or {})
+        self.hparams.update(config['llms']['vertexai'].get('hparams') or {})
 
         self.name = name
 
