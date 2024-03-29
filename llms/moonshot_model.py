@@ -11,9 +11,8 @@ class MoonshotAIModel:
         api_key = config['llms']['moonshot']['api_key'].strip()
         self.client = OpenAI(api_key=api_key, base_url='https://api.moonshot.cn/v1')
         self.name = name
-        config = json.load(open("config.json"))
         self.hparams = config['hparams']
-        self.hparams.update(config['llms']['openai'].get('hparams') or {})
+        self.hparams.update(config['llms']['moonshot'].get('hparams') or {})
 
     def make_request(self, conversation, add_image=None, max_tokens=None):
         conversation = [{"role": "user" if i%2 == 0 else "assistant", "content": content} for i,content in enumerate(conversation)]
