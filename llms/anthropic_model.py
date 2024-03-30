@@ -13,7 +13,7 @@ class AnthropicModel:
         
     def make_request(self, conversation, add_image=None, logit_bias=None, max_tokens=None):
         conversation = [{"role": "user" if i%2 == 0 else "assistant", "content": content} for i,content in enumerate(conversation)]
-        response = anthropic.Anthropic(api_key=self.api_key).beta.messages.create(
+        response = anthropic.Anthropic(api_key=self.api_key).messages.create(
             model=self.name,
             max_tokens=2048,
             messages=conversation
