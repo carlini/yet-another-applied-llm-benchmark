@@ -19,10 +19,10 @@ Question: Is the answer [your guess]?
 """
 
 def is_done_animal(guess):
-    return "diamond age" in guess.lower() or 'illustrated primer' in guess.lower()
+    return "llama" in guess.lower()
 
 def is_done_book(guess):
-    return "llama" in guess.lower()
+    return "diamond age" in guess.lower() or 'illustrated primer' in guess.lower()
 
 def take_one_word(guess):
     return guess.split()[0]
