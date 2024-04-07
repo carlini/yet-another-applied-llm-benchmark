@@ -5,13 +5,13 @@ DESCRIPTION = "Test if the model can significantly shorten a repetitive C functi
 TAGS = ['code', 'c']
 
 question = """
-Code golf this function to be a lot shorter. You only get points if it's <500 bytes (not counting whitespace). Keep the function named `count`.
+Code golf this function to be a lot shorter. You only get points if it's <300 bytes (not counting whitespace). Keep the function named `count`.
 
 ```
-#define ROWS 8
-#define COLS 8
 
 int count() {
+    int ROWS = 8;
+    int COLS = 8;
     int count = 0;
     for (int i = 0; i < 1<<16; i++) {
         long long unsigned int array = ((i & 0xf) << 9) | ((i & 0xf0) << (9 + 8 - 4)) | ((i & 0xf00) << (9 + 8 - 4 + 8 - 4)) | ((i & 0xf000) << (9 + 8 - 4 + 8 - 4 + 8 - 4));
@@ -59,9 +59,9 @@ def short_enough(num):
 
 step = "\nTo do this follow these steps: \n1. Start out explaining what the function does in words.\n2. Then find a few ways that you can make the function shorter given this explanation.\n3. Write the function as short as possible.\n4. See if you can make it any shorter. Return this as the final answer and call it your final answer. Make sure to name it stepper still."
 
-TestShortenC2Hard = question.replace("<500", "<300") >> LLMRun() >> ExtractCode() >> (PyFunc(short_enough(300)) & (CRun(test_case) >> SubstringEvaluator(answer)))
-TestShortenC2 = question >> LLMRun() >> ExtractCode() >> (PyFunc(short_enough(500)) & (CRun(test_case) >> SubstringEvaluator(answer)))
-TestShortenC2Step = question + step >> LLMRun() >> ExtractCode() >> (PyFunc(short_enough(500)) & (CRun(test_case) >> SubstringEvaluator(answer)))
+TestShortenC2Hard = question.replace("<300", "<200") >> LLMRun() >> ExtractCode() >> (PyFunc(short_enough(200)) & (CRun(test_case) >> SubstringEvaluator(answer)))
+TestShortenC2 = question >> LLMRun() >> ExtractCode() >> (PyFunc(short_enough(300)) & (CRun(test_case) >> SubstringEvaluator(answer)))
+TestShortenC2Step = question + step >> LLMRun() >> ExtractCode() >> (PyFunc(short_enough(300)) & (CRun(test_case) >> SubstringEvaluator(answer)))
 
 
 if __name__ == "__main__":
