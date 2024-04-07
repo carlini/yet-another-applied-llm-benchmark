@@ -812,10 +812,10 @@ assert answer == expected, f'Wrong answer; got {{answer}} instead of {{expected}
     return "\n".join(qs), "All tests passed"
     
 
-def make_c_test(q_and_a, header=""):
+def make_c_test(q_and_a, header="", extra_methods=""):
     qs = []
 
-    qs.append("#include<stdio.h>\n#include<stdlib.h>\nint main() {")
+    qs.append("#include<stdio.h>\n#include<stdlib.h>\n" + extra_methods + "\nint main() {")
     qs.append(header)
     for q, a in q_and_a:
         qs.append(f"""
