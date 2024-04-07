@@ -57,7 +57,7 @@ test_case, answer = make_c_test([("count()", "27488")])
 def short_enough(num):
     return lambda code: len(code.replace(" ", "").replace("\n", "").replace("\t", "")) < num
 
-step = "\nTo do this follow these steps: \n1. Start out explaining what the function does in words.\n2. Then find a few ways that you can make the function shorter given this explanation.\n3. Write the function as short as possible.\n4. See if you can make it any shorter. Return this as the final answer and call it your final answer. Make sure to name it stepper still."
+step = "\nTo do this follow these steps: \n1. Start out explaining what the function does in words.\n2. Then find a few ways that you can make the function shorter given this explanation.\n3. Write the function as short as possible.\n4. See if you can make it any shorter. Return this as the final answer and call it your final answer. Make sure to name it `count` still."
 
 TestShortenC2Hard = question.replace("<300", "<200") >> LLMRun() >> ExtractCode() >> (PyFunc(short_enough(200)) & (CRun(test_case) >> SubstringEvaluator(answer)))
 TestShortenC2 = question >> LLMRun() >> ExtractCode() >> (PyFunc(short_enough(300)) & (CRun(test_case) >> SubstringEvaluator(answer)))
