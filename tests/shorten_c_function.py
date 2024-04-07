@@ -91,7 +91,7 @@ def short_enough(num):
 
 step = "\nTo do this follow these steps: \n1. start out by creating a table of the values that are being written to the pins.\n2. Then find an expression for this.\n3. Write the function as short as possible.\n4. See if you can make it any shorter. Return this as the final answer and call it your final answer. Make sure to name it stepper still."
 
-TestShortenC200 = question.replace("<300", "<200") >> LLMRun() >> ExtractCode() >> (PyFunc(short_enough(200)) & (CRun(test_case) >> SubstringEvaluator(answer)))
+TestShortenCHard = question.replace("<300", "<200") >> LLMRun() >> ExtractCode() >> (PyFunc(short_enough(200)) & (CRun(test_case) >> SubstringEvaluator(answer)))
 TestShortenC = question >> LLMRun() >> ExtractCode() >> (PyFunc(short_enough(300)) & (CRun(test_case) >> SubstringEvaluator(answer)))
 TestShortenCStep = question + step >> LLMRun() >> ExtractCode() >> (PyFunc(short_enough(300)) & (CRun(test_case) >> SubstringEvaluator(answer)))
 
