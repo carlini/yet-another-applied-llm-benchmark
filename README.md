@@ -225,7 +225,8 @@ language model queries. After you can view the full reslt html file in the
 directory `evaluation_examples`.
 
 It will also save a cache of this run, so that the next time you can run
-a new model and view the two results side-by-side.
+a new model and view the two results side-by-side. These are saved by
+default in the directory results/[current git commit hash]/[model name].
 
 If you want to run individual test cases, you can do that too in two ways.
 One is to just directly run test
@@ -241,9 +242,20 @@ is to run the main script and specify which test(s) you want to run.
 
 
 ```bash
-python main.py --test print_hello --run-tests --model gpt-3.5-turbo-0125
+python main.py --run-tests --test print_hello --model gpt-3.5-turbo-0125
 ```
 
+If you've run generated many saved runs previously, you can load them into one grid with
+
+```bash
+python main.py --load-saved --generate-report --model [model1] --model [model2]
+```
+
+And finally, if you've run the tests previously at one git commit, and want to just run any tests that have changed since then, you can run
+
+```bash
+python main.py --run-tests --only-changed [commit hash] --model gpt-3.5-turbo-0125
+```
 
 # Modifying the benchmark
 
