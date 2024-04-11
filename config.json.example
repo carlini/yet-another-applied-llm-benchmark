@@ -16,6 +16,10 @@
         "cohere": {
             "api_key": "TODO"
         },
+        "gemma" : {
+            "KAGGLE_USERNAME":"UPDATE",
+            "KAGGLE_KEY":"UPDATE"
+        },
         "anthropic": {
             "api_key": "TODO"
         },
