@@ -22,6 +22,7 @@ import llm
 import json
 import argparse
 import pickle
+import subprocess
 
 import create_results_html
 
@@ -112,7 +113,19 @@ def get_tags():
                 descriptions[f+"."+t] = module.DESCRIPTION
     return tags, descriptions
 
-
+def get_ordered_logs(logdir):
+    hashes = []
+    for githash in os.listdir(logdir):
+        if '-run' in githash:
+            print("There was a breaking change in how results are stored. Please move the runs into args.logdir/[git commit hash]/[the results].")
+            exit(1)
+        hashes.append(githash)
+    
+    command = ['git', 'log', '--pretty=format:%H']
+    result = subprocess.run(command, capture_output=True, text=True)
+    commit_hashes = result.stdout.strip().split('\n')
+    commit_hashes = [x for x in commit_hashes if x in hashes]
+    return commit_hashes
 
 def load_saved_runs(output_dir, model):
     """
@@ -149,7 +162,8 @@ def main():
     parser.add_argument('--logdir', help='Output path for the results.', type=str, default='results')
     parser.add_argument('--generate-report', help='Generate an HTML report.', action='store_true')
     parser.add_argument('--load-saved', help='Load saved evaluations.', action='store_true')
-    parser.add_argument('--run-tests', help='Load saved evaluations.', action='store_true')
+    parser.add_argument('--run-tests', help='Run a batch of tests.', action='store_true')
+    parser.add_argument('--only-changed', help='Only run tests that have changed since the given commit (INCLUSIVE).')
 
     args = parser.parse_args()
 
@@ -166,27 +180,61 @@ def main():
     if args.model:
         models_to_run = args.model
     elif args.all_models:
-        models_to_run = ["gpt-4-0125-preview", "claude-2.1", "claude-instant-1.2", "gpt-3.5-turbo-0125","gemini-pro", "mistral-medium", "mistral-small"]
+        models_to_run = ["gpt-4-0125-preview", "claude-3-opus-20240229", "claude-3-sonnet-20240229", "gpt-3.5-turbo-0125", "gemini-pro", "mistral-large-latest", "mistral-medium"]
 
     data = {}
     for model in models_to_run:
         if args.load_saved:
-            data[model] = load_saved_runs(args.logdir, model)
-        else:
+            data[model] = {}
+
+            commit_hashes = get_ordered_logs(args.logdir)
+            print("Loading data from commits")
+
+            for githash in commit_hashes[::-1]:
+                print(githash)
+                kvs = load_saved_runs(os.path.join(args.logdir, githash), model)
+                for k,v in kvs.items():
+                    data[model][k] = v
+        elif args.run_tests:
+
+            tests_subset = None # run all of them
+            
+            if args.test:
+                tests_subset = args.test # run the ones the user said
+            elif args.only_changed:
+                latest_commit_finished = args.only_changed
+                command = ['git', 'diff', '--name-only', latest_commit_finished+"^", 'HEAD']
+                
+                result = subprocess.run(command, capture_output=True, text=True)
+                changed_files = result.stdout.strip().split('\n')
+                changed_files = [x.split("tests/")[1].split(".py")[0] for x in changed_files if x.startswith("tests/")]
+                print("Running the following tests:\n  -",
+                      "\n  - ".join(changed_files))
+                tests_subset = set(changed_files)
+
+            
+            command = ['git', 'rev-parse', 'HEAD']
+            result = subprocess.run(command, capture_output=True, text=True)
+            current_commit_hash = result.stdout.strip()
+
             data[model] = {}
             for i in range(args.times):
                 print(f"Running {model}, iteration {i+args.runid}")
                 result = run_all_tests(model, use_cache=False,
-                                       which_tests=args.test)
+                                       which_tests=tests_subset)
 
                 for k,(v1,v2) in result.items():
                     if k not in data[model]:
                         data[model][k] = ([], [])
                     data[model][k][0].append(v1)
                     data[model][k][1].append(v2)
-                
-                with open(f"{args.logdir}/{model}-run{i+args.runid}.p", 'wb') as f:
+
+                if not os.path.exists(os.path.join(args.logdir, current_commit_hash)):
+                    os.mkdir(os.path.join(args.logdir, current_commit_hash))
+                with open(f"{args.logdir}/{current_commit_hash}/{model}-run{i+args.runid}.p", 'wb') as f:
                     pickle.dump(result, f)
+        else:
+            raise "Unreachable"
 
     if args.generate_report:
         tags, descriptions = get_tags()  # Assuming these functions are defined in your codebase
