@@ -59,4 +59,4 @@ if __name__ == "__main__":
     import sys
     #q = sys.stdin.read().strip()
     q = "why?"
-    print(VertexAIModel("gemini-pro").make_request(["hi, how are you doing", "i'm a bit sad", q]))
+    print(VertexAIModel("gemini-1.5-pro-preview-0409").make_request(["hi, how are you doing", "i'm a bit sad", q]))

@@ -29,6 +29,16 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     git
 
+RUN ln -s /usr/bin/python3.11 /usr/bin/python
+RUN rm /usr/bin/pip
+RUN ln -s /usr/bin/pip3.11 /usr/bin/pip
+RUN rm /usr/bin/python3
+RUN rm /usr/bin/pip3
+RUN ln -s /usr/bin/python3.11 /usr/bin/python3
+RUN ln -s /usr/bin/pip3.11 /usr/bin/pip3
+
+RUN echo '#!/bin/bash\n"$@"' > /usr/bin/sudo && \
+    chmod +x /usr/bin/sudo
 
 RUN python3.11 -m pip install --upgrade pip && \
     pip install numpy scipy numba Pillow jax jaxlib python-chess torch
