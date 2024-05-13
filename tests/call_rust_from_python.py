@@ -6,7 +6,7 @@ TAGS = ['rust', 'c', 'python', 'code']
 
 question = """I want to call some rust code from python on a linux machine. Specifically, I want to be able to run
 
-python -c 'import magic; print(magic.do_add(3, 4))'
+python3 -c 'import magic; print(magic.do_add(3, 4))'
 
 and have it give me the sum of these numbers. Here, do_add should be a rust function that adds two integers.
 
@@ -30,7 +30,7 @@ def is_ok():
     import os
     os.popen("bash build.sh").read()
     
-    return os.popen("python -c 'import magic; print(magic.do_add(31, 11))'").read() == "42\n"
+    return os.popen("python3 -c 'import magic; print(magic.do_add(31, 11))'").read() == "42\n"
 
     
 TestCallRustFromPy = question >> LLMConversation() >> LLMConversation(question2) >> ExtractJSON() >> MakeFilesFromJSON() >> PyEvaluator(is_ok)
@@ -38,6 +38,6 @@ TestCallCFromPy = question.replace("rust", "C") >> LLMConversation() >> LLMConve
 
 
 if __name__ == "__main__":
-    print(run_test(TestCallRustFromPy))
+    print(run_test(TestCallCFromPy))
 
 
