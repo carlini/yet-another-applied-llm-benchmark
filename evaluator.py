@@ -36,6 +36,7 @@ from docker_controller import invoke_docker, DockerJob
 LLM = "llm"                         # The LLM under evaluation
 EVAL_LLM = "eval_llm"               # A good LLM that can act as a judge
 VISION_EVAL_LLM = "vision_eval_llm" # And a good judge for vision tasks
+PYTHON_ENV = "python3"              # The version of python to use
 
 class Env:
     """
