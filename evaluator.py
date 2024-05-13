@@ -307,6 +307,25 @@ class SubstringEvaluator(Node):
         else:
             yield False, Reason(type(self), [self.substr, False])
 
+class RegexEvaluator(Node):
+    """
+    An evaluation node that checks if a regex pattern matches the output.
+    """
+    def __init__(self, pattern, ignore_case=False):
+        self.pattern = pattern
+        self.ignore_case = ignore_case
+
+    def __call__(self, output):
+        import re
+
+        flags = re.IGNORECASE if self.ignore_case else 0
+        match = re.search(self.pattern, output, flags)
+
+        if match:
+            yield True, Reason(type(self), [self.pattern, True])
+        else:
+            yield False, Reason(type(self), [self.pattern, False])
+            
 class ContainsIntEvaluator(Node):
     """
     An evaluation node that checks if a given integer is in the output.

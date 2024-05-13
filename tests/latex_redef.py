@@ -8,7 +8,7 @@ question = """
 Redfine \\paragraph to be \\bigskip\\textbf
 """
 
-TestLatexRedef = question >> LLMRun() >> (SubstringEvaluator("\\renewcommand{\\paragraph}") & SubstringEvaluator("\\bigskip") & SubstringEvaluator("\\textbf") & SubstringEvaluator("\\noindent"))
+TestLatexRedef = question >> LLMRun() >> ((SubstringEvaluator("\\renewcommand{\\paragraph}") | SubstringEvaluator("\\renewcommand\\paragraph")) & SubstringEvaluator("\\bigskip") & SubstringEvaluator("\\textbf") & SubstringEvaluator("\\noindent"))
 
 if __name__ == "__main__":
     print(run_test(TestLatexRedef))

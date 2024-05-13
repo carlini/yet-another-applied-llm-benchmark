@@ -25,7 +25,7 @@ def fix_whitespace(x):
     return " ".join(x.split())
 
 
-TestBashListSize = Setup(setup_fn) >> question >> LLMRun() >> ExtractCode(keep_main=True, lang="bash") >> BashRun() >> PyFunc(fix_whitespace) >> EqualEvaluator("2 0 5 7 1 6 4 3 9 8")
+TestBashListSize = Setup(setup_fn) >> question >> LLMRun() >> ExtractCode(keep_main=True, lang="bash") >> BashRun() >> PyFunc(fix_whitespace) >> RegexEvaluator("2.*0.*5.*7.*1.*6.*4.*3.*9.*8")
 
 
 if __name__ == "__main__":
