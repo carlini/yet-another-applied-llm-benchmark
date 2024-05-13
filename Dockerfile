@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     git
 
-RUN rm /usr/lib/python3.12/EXTERNALLY-MANAGED
+RUN rm -f /usr/lib/python3.12/EXTERNALLY-MANAGED
 
 RUN python3 -m pip install --upgrade pip && \
     pip3 install numpy scipy numba Pillow jax jaxlib python-chess torch

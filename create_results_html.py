@@ -80,6 +80,8 @@ def format_markdown(reason, indent=0):
         return f"{pounds} Extract Json\nI extracted the following JSON from that output:\n> ```json\n{fix(reason.children[0])}\n> ```\n"
     elif reason.node == SubstringEvaluator:
         return f"{pounds} Substring Evaluation\nTesting if the previous output contains the string `{reason.children[0]}`: {reason.children[1]}\n"
+    elif reason.node == RegexEvaluator:
+        return f"{pounds} Regex Evaluation\nTesting if the previous output matches the regex `{reason.children[0]}`: {reason.children[1]}\n"
     elif reason.node == EqualEvaluator:
         return f"{pounds} Equal Evaluation\nTesting if the previous output equals the string `{reason.children[0]}`: {reason.children[1]}\n"
     elif reason.node == ContainsIntEvaluator:
@@ -123,7 +125,11 @@ def generate_report(data, tags, descriptions):
     print(all_tests)
     
     # keep only the tests that are in all models
+    union_tests = set.union(*map(set, all_tests))
     all_tests = set.intersection(*map(set, all_tests))
+
+    print("Skipping", union_tests - all_tests)
+    
     all_tests = sorted(all_tests)
 
     #all_tests = ["draw_flag_bmp.py.TestEasyFlagDraw"]
