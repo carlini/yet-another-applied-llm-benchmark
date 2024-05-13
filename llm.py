@@ -36,8 +36,10 @@ class LLM:
             self.model = LLAMAModel(name)
         elif 'mistral' in name:
             self.model = MistralModel(name)
-        elif 'gemini' in name or 'bison' in name:
+        elif 'bison' in name or 'gemini' in name:
             self.model = VertexAIModel(name)
+        #elif 'gemini' in name:
+        #    self.model = GeminiModel(name)
         elif 'claude' in name:
             self.model = AnthropicModel(name)
         elif 'command' in name:
@@ -80,6 +82,8 @@ class LLM:
                 break
             except Exception as e:
                 print("RUN FAILED", e)
+                import traceback
+                traceback.print_exc()
                 time.sleep(10)
                 pass
         
@@ -92,8 +96,13 @@ class LLM:
 
 #llm = LLM("command")
 #llm = LLM("gpt-3.5-turbo")
-llm = LLM("gpt-4-1106-preview")
-#llm = LLM("claude-instant-1.2")
+#llm = LLM("gpt-4-turbo-2024-04-09")
+#llm = LLM("gemini-1.5-pro-preview-0409")
+llm = LLM("gpt-4o")
+
+#llm = LLM("claude-3-opus-20240229")
+#llm = LLM("claude-3-sonnet-20240229")
+
 #llm = LLM("mistral-tiny")
 #llm = LLM("gemini-pro", override_hparams={'temperature': 0.3}, use_cache=False)
 

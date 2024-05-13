@@ -446,6 +446,26 @@ class MakeFile(Node):
         out = invoke_docker(self.env, {self.name: code.encode()}, ["echo"])
         yield out, Reason(type(self), (code, out))
 
+class MakeFilesFromJSON(Node):
+    """
+    A node that makes a new file within the docker environment.
+    """
+    def __init__(self):
+        pass
+
+    def __call__(self, json_str):
+        try:
+            json_obj = json.loads(json_str)
+        except:
+            json_obj = {}
+            
+        for k in json_obj.keys():
+            if not isinstance(json_obj[k], bytes):
+                json_obj[k] = json_obj[k].encode()
+
+        out = invoke_docker(self.env, json_obj, ["echo"])
+        yield out, Reason(type(self), (json_str, out))
+        
 
 class PythonRun(Node):
     """
