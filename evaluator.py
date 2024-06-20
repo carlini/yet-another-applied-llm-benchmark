@@ -645,14 +645,16 @@ class LLMRun(Node):
 
     This is the core function that allows us to evaluate the capabilities of any model.
     """
-    def __init__(self, check_prompt="<A>", llm=LLM):
+    def __init__(self, check_prompt="<A>", llm=LLM, json=False):
         self.check_prompt = check_prompt
         self.which_llm = llm
+        self.json = json
 
     def __call__(self, output):
         llm = getattr(self, self.which_llm)
         to_send = self.check_prompt.replace("<A>", output)
-        out = llm(to_send)
+        out = llm(to_send, json=self.json)
+            
         yield out, Reason(type(self), (to_send, out))
 
 class LLMConversation(Node):

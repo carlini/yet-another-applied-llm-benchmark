@@ -59,7 +59,7 @@ class LLM:
         else:
             self.cache = {}
 
-    def __call__(self, conversation, add_image=None, max_tokens=None, skip_cache=False):
+    def __call__(self, conversation, add_image=None, max_tokens=None, skip_cache=False, json=False):
         if type(conversation) == str:
             conversation = [conversation]
 
@@ -78,7 +78,10 @@ class LLM:
         response = "Model API request failed"
         for _ in range(3):
             try:
-                response = self.model.make_request(conversation, add_image=add_image, max_tokens=max_tokens)
+                extra = {}
+                if json:
+                    extra['json'] = json
+                response = self.model.make_request(conversation, add_image=add_image, max_tokens=max_tokens, **extra)
                 break
             except Exception as e:
                 print("RUN FAILED", e)
@@ -95,10 +98,10 @@ class LLM:
         return response
 
 #llm = LLM("command")
-#llm = LLM("gpt-3.5-turbo")
+llm = LLM("gpt-3.5-turbo")
 #llm = LLM("gpt-4-turbo-2024-04-09")
 #llm = LLM("gemini-1.5-pro-preview-0409")
-llm = LLM("gpt-4o")
+#llm = LLM("gpt-4o", override_hparams={'temperature': 0.1})
 
 #llm = LLM("claude-3-opus-20240229")
 #llm = LLM("claude-3-sonnet-20240229")
@@ -107,7 +110,7 @@ llm = LLM("gpt-4o")
 #llm = LLM("gemini-pro", override_hparams={'temperature': 0.3}, use_cache=False)
 
 #eval_llm = LLM("gpt-4-1106-preview")
-eval_llm = LLM("gpt-4-0125-preview", override_hparams={'temperature': 0.1})
+eval_llm = LLM("gpt-4o", override_hparams={'temperature': 0.1})
 #eval_llm = LLM("gpt-3.5-turbo", override_hparams={'temperature': 0.1})
 
-vision_eval_llm = LLM("gpt-4-vision-preview", override_hparams={'temperature': 0.1})
+vision_eval_llm = LLM("gpt-4o", override_hparams={'temperature': 0.1})
