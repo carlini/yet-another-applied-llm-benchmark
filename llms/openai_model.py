@@ -14,7 +14,7 @@ class OpenAIModel:
         self.hparams = config['hparams']
         self.hparams.update(config['llms']['openai'].get('hparams') or {})
 
-    def make_request(self, conversation, add_image=None, max_tokens=None):
+    def make_request(self, conversation, add_image=None, max_tokens=None, json=False):
         conversation = [{"role": "user" if i%2 == 0 else "assistant", "content": content} for i,content in enumerate(conversation)]
     
         if add_image:
@@ -40,6 +40,8 @@ class OpenAIModel:
         for k,v in list(kwargs.items()):
             if v is None:
                 del kwargs[k]
+        if json:
+            kwargs['response_format'] = { "type": "json_object" }
     
         out = self.client.chat.completions.create(
             model=self.name,

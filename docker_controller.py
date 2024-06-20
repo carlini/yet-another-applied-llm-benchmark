@@ -31,12 +31,13 @@ import struct
 import fcntl
 import random
 import json
+import re
 
 
 # DO NOT SET THIS FLAG TO TRUE UNLESS YOU ARE SURE YOU UNDERSTAND THE CONSEQUENCES
 # IT IS VERY DANGEROUS. YOU WILL BE DIRECTLY EVALUATING WHATEVER COMES OUT OF
 # A LANGUAGE MODEL DIRECTLY ON YOUR COMPUTER WITH NO SAFETY CHECKS.
-I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE_OR_MAKING_THEM_HALT_AND_CATCH_FIRE = False
+I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE_OR_MAKING_THEM_HALT_AND_CATCH_FIRE = True
 
 BACKEND = json.load(open("config.json"))['container']
 
@@ -227,19 +228,42 @@ if I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE_OR_MAKIN
         
     def setup_docker(env):
         import random
-        env.fake_docker_id = random.randint(0, 1000000)
+        env.fake_docker_id = random.randint(0, 10000000000)
         os.mkdir("/tmp/fakedocker_%d"%env.fake_docker_id)
         
-    def invoke_docker(env, files, run_cmd, out_bytes=False):
-        if env.fake_docker_id is None:
-            setup_docker(env)
 
-        for file_name, file_content in files.items():
-            with open("/tmp/fakedocker_%d/%s"%(env.fake_docker_id, file_name), "wb") as f:
-                f.write(file_content)
-        proc = subprocess.run(run_cmd, cwd="/tmp/fakedocker_%d"%env.fake_docker_id, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    def invoke_docker(env, files, run_cmd, out_bytes=False):
+        if env.docker is None:
+            setup_docker(env)
+    
+        def raise_timeout(signum, frame):
+            raise TimeoutError
+        signal.signal(signal.SIGALRM, raise_timeout)
+        signal.alarm(20)
+        
+        try:
+            # Function call that might take too long
+            for file_name, file_content in files.items():
+                with open("/tmp/fakedocker_%d/%s"%(env.fake_docker_id, file_name), "wb") as f:
+                    f.write(file_content)
+            proc = subprocess.run(run_cmd, cwd="/tmp/fakedocker_%d"%env.fake_docker_id, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except TimeoutError:
+            if out_bytes:
+                return b"Timeout: function took too long to complete"
+            else:
+                return "Timeout: function took too long to complete"
+
+        signal.alarm(0) 
+    
 
         if out_bytes:
             return proc.stdout + proc.stderr
         else:
-            return proc.stdout.decode("utf-8") + proc.stderr.decode("utf-8")
+            stdout = proc.stdout.decode("utf-8")
+            stderr = proc.stderr.decode("utf-8")
+            
+            # Replace /fakedocker_[0-9]*/ with /fakedocker/
+            stdout = re.sub(r'/fakedocker_[0-9]*/', '/fakedocker/', stdout)
+            stderr = re.sub(r'/fakedocker_[0-9]*/', '/fakedocker/', stderr)
+        
+            return stdout + stderr
