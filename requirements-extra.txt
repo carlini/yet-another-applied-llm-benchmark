@@ -3,3 +3,4 @@ anthropic
 google-cloud-aiplatform
 cohere
 google-generativeai
+groq

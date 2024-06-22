@@ -27,6 +27,7 @@ from llms.mistral_model import MistralModel
 from llms.vertexai_model import VertexAIModel
 from llms.cohere_model import CohereModel
 from llms.moonshot_model import MoonshotAIModel
+from  llms.groq_model import GroqModel
 
 class LLM:
     def __init__(self, name="gpt-3.5-turbo", use_cache=True, override_hparams={}):
@@ -47,6 +48,8 @@ class LLM:
             self.model = MoonshotAIModel(name)            
         elif 'command' in name:
             self.model = CohereModel(name)
+        elif 'llama3' in name or 'mixtral' in name or 'gemma' in name:
+            self.model = GroqModel(name)
         else:
             raise
         self.model.hparams.update(override_hparams)
