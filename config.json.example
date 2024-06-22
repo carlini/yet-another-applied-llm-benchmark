@@ -21,6 +21,9 @@
         },
         "moonshot": {
             "api_key": "TODO"
-        }        
+        },
+        "groq": {
+            "api_key": "TODO"
+        }
     }
 }
