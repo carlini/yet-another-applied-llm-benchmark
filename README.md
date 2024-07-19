@@ -52,7 +52,7 @@ I've evaluated a few models on this benchmark. Here's how they perform:
 * Claude 3.5 Sonnet: 48% passed
 * GPT 4o: 47% passed
 * Claude 3 Opus: 42% passed
-* Claude 3 Sonnet: 32% passed
+* GPT 4o Mini: 36% passed
 * Gemini 1.5 Pro: 32% passed
 * Mistral Large: 28% passed
 * GPT 3.5: 26% passed
