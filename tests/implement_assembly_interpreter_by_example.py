@@ -10,10 +10,11 @@ SET R1 2          // Starting number to check for prime
 
 start_find_primes:
 
-    JMP is_prime is_prime // Control will return after executing is_prime with R1 as input and R2 containing the result
+    JMP is_prime // Control will return after executing is_prime with R1 as input and R2 containing the result
 
 ready_prime:
-    EQ R2 1        // Check if R2 is 1 (prime)
+    SET R7 1
+    EQ R2 R7        // Check if R2 is 1 (prime)
     JF increment  // If not prime, skip storing and increment the number
 
     // Store prime number in memory and increment count
@@ -21,7 +22,8 @@ ready_prime:
     INC R8        // Increment prime count
 
     // Check if 100 primes are found
-    EQ R8 100
+    SET R7 100
+    EQ R8 R7
     JF increment  // If not 100 primes found yet, continue finding
 
     JMP end        // If 100 primes found, end program
@@ -41,7 +43,8 @@ start_loop:        // Label to start the loop
     JT is_prime_end        // If not exceeded, continue; else, end loop
 
     MOD R6 R1 R3   // R6 = R1 % R3
-    EQ R7 R6 0     // Check if R6 is 0
+    SET R7 0
+    EQ R7 R6     // Check if R6 is 0
     JT not_prime   // If yes, number is not prime
 
     INC R3         // Increment divisor
@@ -64,9 +67,9 @@ loop:
     STORE R3 R1
     INC R1
     INC R2
-    EQ R1 20
+    SET R3 20
+    EQ R1 R3
     JF loop
-HCF
 """
 
 question = f"""Here is an example program from a new assmebly language I made up that computes primes:

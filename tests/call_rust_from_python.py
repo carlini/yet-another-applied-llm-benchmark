@@ -38,6 +38,6 @@ TestCallCFromPy = question.replace("rust", "C") >> LLMConversation() >> LLMConve
 
 
 if __name__ == "__main__":
-    print(run_test(TestCallCFromPy))
+    print(run_test(TestCallRustFromPy))
 
 

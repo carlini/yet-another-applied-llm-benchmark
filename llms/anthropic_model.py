@@ -25,5 +25,5 @@ class AnthropicModel:
 if __name__ == "__main__":
     import sys
     q = "What's your name?"
-    print(q+":", AnthropicModel("claude-2.1").make_request([q]))
+    print(q+":", AnthropicModel("claude-3-5-sonnet-20240620").make_request([q]))
 

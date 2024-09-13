@@ -43,7 +43,9 @@ class OpenAIModel:
                 del kwargs[k]
         if json:
             kwargs['response_format'] = { "type": "json_object" }
-    
+        if self.name.startswith("o1"):
+            del kwargs['temperature']
+
         out = self.client.chat.completions.create(
             model=self.name,
             **kwargs
@@ -55,4 +57,4 @@ if __name__ == "__main__":
     import sys
     #q = sys.stdin.read().strip()
     q = "hello there"
-    print(q+":", OpenAIModel("gpt-3.5-turbo").make_request([q]))
+    print(q+":", OpenAIModel("o1-mini").make_request([q]))
