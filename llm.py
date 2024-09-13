@@ -32,7 +32,7 @@ from  llms.groq_model import GroqModel
 class LLM:
     def __init__(self, name="gpt-3.5-turbo", use_cache=True, override_hparams={}):
         self.name = name
-        if 'gpt' in name:
+        if 'gpt' in name or name.startswith('o1'):
             self.model = OpenAIModel(name)
         # elif 'llama' in name:
         #     self.model = LLAMAModel(name)
@@ -81,20 +81,34 @@ class LLM:
 
         print(self.name, "CACHE MISS", repr(conversation))
 
+        
+        import traceback
+        from concurrent.futures import ThreadPoolExecutor, TimeoutError
+
         response = "Model API request failed"
         for _ in range(3):
             try:
                 extra = {}
                 if json:
                     extra['json'] = json
-                response = self.model.make_request(conversation, add_image=add_image, max_tokens=max_tokens, **extra)
-                break
+                
+                def request_with_timeout():
+                    return self.model.make_request(conversation, add_image=add_image, max_tokens=max_tokens, **extra)
+                
+                with ThreadPoolExecutor() as executor:
+                    future = executor.submit(request_with_timeout)
+                    try:
+                        response = future.result(timeout=60*10)  # 10 minutes
+                        break  # If successful, break out of the retry loop
+                    except TimeoutError:
+                        print("Request timed out after 60 seconds")
+                        response = "Model API request failed due to timeout"
+                        # Continue to the next retry
             except Exception as e:
                 print("RUN FAILED", e)
-                import traceback
                 traceback.print_exc()
-                time.sleep(10)
-                pass
+            
+            time.sleep(10)
         
 
         if self.use_cache and response != "Model API request failed":
@@ -104,13 +118,13 @@ class LLM:
         return response
 
 #llm = LLM("command")
-llm = LLM("gpt-3.5-turbo")
+#llm = LLM("gpt-3.5-turbo")
 #llm = LLM("gpt-4-turbo-2024-04-09")
 #llm = LLM("gemini-1.5-pro-preview-0409")
-#llm = LLM("gpt-4o", override_hparams={'temperature': 0.1})
+llm = LLM("o1-mini")
 
 #llm = LLM("claude-3-opus-20240229")
-#llm = LLM("claude-3-sonnet-20240229")
+#llm = LLM("claude-3-5-sonnet-20240620")
 
 #llm = LLM("mistral-tiny")
 #llm = LLM("gemini-pro", override_hparams={'temperature': 0.3}, use_cache=False)
