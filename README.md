@@ -49,15 +49,14 @@ This is helpful for determining whether or not models are capable of performing 
 ## Results
 
 I've evaluated a few models on this benchmark. Here's how they perform:
-* Claude 3.5 Sonnet: 48% passed
-* GPT 4o: 47% passed
+* o1-mini: 62% passed
+* Claude 3.5 Sonnet: 56% passed
+* GPT 4o: 48% passed
+* Gemini 1.5 Pro: 43% passed
 * Claude 3 Opus: 42% passed
 * GPT 4o Mini: 36% passed
-* Gemini 1.5 Pro: 32% passed
 * Mistral Large: 28% passed
 * GPT 3.5: 26% passed
-* Mistral Medium: 23% passed
-* Gemini 1.0 Pro: 17% passed
 
 A complete evaluation grid is available [here](https://nicholas.carlini.com/writing/2024/evaluation_examples/index.html).
 
