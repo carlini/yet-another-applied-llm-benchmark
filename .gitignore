@@ -1,1 +1,4 @@
 .API_KEY
+config.json
+myenv
+tmp/*

@@ -48,7 +48,8 @@ class LLM:
             self.model = MoonshotAIModel(name)            
         elif 'command' in name:
             self.model = CohereModel(name)
-        elif 'llama3' in name or 'mixtral' in name or 'gemma' in name:
+        elif 'llama3' in name or 'mixtral' in name or 'gemma' in name or 'deepseek' in name:
+            print("Using Groq model", name)
             self.model = GroqModel(name)
         else:
             raise
