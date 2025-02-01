@@ -21,9 +21,8 @@ class GroqModel:
 
         return response.choices[0].message.content
 
-
 if __name__ == "__main__":
     import sys
     q = "What's your name?"
-    print(q+":", GroqModel("llama3-70b-8192").make_request([q]))
+    print(q+":", GroqModel("deepseek-r1-distill-llama-70b").make_request([q]))
 
