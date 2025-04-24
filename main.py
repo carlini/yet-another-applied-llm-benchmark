@@ -231,7 +231,7 @@ def main():
 
                 if not os.path.exists(os.path.join(args.logdir, current_commit_hash)):
                     os.mkdir(os.path.join(args.logdir, current_commit_hash))
-                with open(f"{args.logdir}/{current_commit_hash}/{model}-run{i+args.runid}.p", 'wb') as f:
+                with open(f"{args.logdir}/{current_commit_hash}/{model.replace('/', '-')}-run{i+args.runid}.p", 'wb') as f:
                     pickle.dump(result, f)
         else:
             raise "Unreachable"

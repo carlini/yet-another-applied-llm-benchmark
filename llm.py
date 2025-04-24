@@ -24,6 +24,7 @@ import time
 from llms.openai_model import OpenAIModel
 from llms.anthropic_model import AnthropicModel
 from llms.mistral_model import MistralModel
+from llms.openrouter_model import OpenRouterModel
 from llms.vertexai_model import VertexAIModel
 from llms.cohere_model import CohereModel
 from llms.moonshot_model import MoonshotAIModel
@@ -32,7 +33,9 @@ from  llms.groq_model import GroqModel
 class LLM:
     def __init__(self, name="gpt-3.5-turbo", use_cache=True, override_hparams={}):
         self.name = name
-        if 'gpt' in name or name.startswith('o1'):
+        if 'openrouter' in name:
+            self.model = OpenRouterModel(name)
+        elif 'gpt' in name or name.startswith('o1'):
             self.model = OpenAIModel(name)
         # elif 'llama' in name:
         #     self.model = LLAMAModel(name)
