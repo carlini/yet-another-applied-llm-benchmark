@@ -33,7 +33,7 @@ from  llms.groq_model import GroqModel
 class LLM:
     def __init__(self, name="gpt-3.5-turbo", use_cache=True, override_hparams={}):
         self.name = name
-        if 'openrouter' in name:
+        if name.startswith("openrouter"):
             self.model = OpenRouterModel(name)
         elif 'gpt' in name or name.startswith('o1'):
             self.model = OpenAIModel(name)

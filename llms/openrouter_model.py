@@ -9,6 +9,7 @@ class OpenRouterModel(OpenAIModel):
     def __init__(self, name):
         config = json.load(open("config.json"))
         api_key = config["llms"]["openrouter"]["api_key"].strip()
+        # Inspired by https://openrouter.ai/docs/quickstart
         self.client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=api_key)
         self.name = name[len("openrouter/") :]
         self.hparams = config["hparams"]
