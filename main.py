@@ -184,6 +184,9 @@ def main():
 
     data = {}
     for model in models_to_run:
+        # Save the original model name and one better suited for the file system/logs
+        raw_model_name = model
+        model = model.replace("/", "-")
         if args.load_saved:
             data[model] = {}
 
@@ -220,7 +223,7 @@ def main():
             data[model] = {}
             for i in range(args.times):
                 print(f"Running {model}, iteration {i+args.runid}")
-                result = run_all_tests(model, use_cache=False,
+                result = run_all_tests(raw_model_name, use_cache=False,
                                        which_tests=tests_subset)
 
                 for k,(v1,v2) in result.items():
@@ -231,7 +234,7 @@ def main():
 
                 if not os.path.exists(os.path.join(args.logdir, current_commit_hash)):
                     os.mkdir(os.path.join(args.logdir, current_commit_hash))
-                with open(f"{args.logdir}/{current_commit_hash}/{model.replace('/', '-')}-run{i+args.runid}.p", 'wb') as f:
+                with open(f"{args.logdir}/{current_commit_hash}/{model}-run{i+args.runid}.p", 'wb') as f:
                     pickle.dump(result, f)
         else:
             raise "Unreachable"
